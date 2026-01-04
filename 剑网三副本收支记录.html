@@ -1,0 +1,1371 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>剑网三副本收支记录</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+   * {margin:0;padding:0;box-sizing:border-box;font-family:'Microsoft YaHei','微软雅黑',sans-serif}
+   :root {--primary-color:#3498db;--secondary-color:#2ecc71;--accent-color:#9b59b6;--light-color:#f8f9fa;--dark-color:#34495e;--success-color:#27ae60;--danger-color:#e74c3c;--warning-color:#f39c12;--shadow:0 4px 12px rgba(0,0,0,0.08);--border-radius:10px;--transition:all 0.3s ease}
+   body {background:linear-gradient(135deg,#f5f7fa 0,#e4e9f2 100%);color:#333;min-height:100vh;padding:20px}
+   .container {max-width:1300px;margin:0 auto}
+   header {text-align:center;margin-bottom:30px;padding:25px;background:#fff;border-radius:var(--border-radius);box-shadow:var(--shadow);border:1px solid #e0e6ed;position:relative;overflow:hidden}
+   header::before {content:"";position:absolute;top:0;left:0;width:100%;height:4px;background:linear-gradient(to right,var(--primary-color),var(--secondary-color),var(--accent-color))}
+   h1 {font-size:2.5rem;color:var(--dark-color);margin-bottom:10px;font-weight:700}
+   .subtitle {font-size:1.1rem;color:#7f8c8d;font-style:italic}
+   .main-content {display:grid;grid-template-columns:1fr 1fr;gap:25px;margin-bottom:30px}
+   @media (max-width:992px) {.main-content {grid-template-columns:1fr}}
+   .card {background:#fff;border-radius:var(--border-radius);padding:25px;box-shadow:var(--shadow);border:1px solid #e0e6ed;transition:var(--transition)}
+   .card:hover {box-shadow:0 8px 20px rgba(0,0,0,.12);transform:translateY(-3px)}
+   .card h2 {color:var(--dark-color);border-bottom:2px solid #f0f3f8;padding-bottom:12px;margin-bottom:25px;font-size:1.6rem;display:flex;align-items:center;gap:10px}
+   .card h2 i {color:var(--primary-color)}
+   .form-group {margin-bottom:20px}
+   label {display:block;margin-bottom:8px;color:#2c3e50;font-weight:600;font-size:.95rem}
+   input,select,textarea {width:100%;padding:12px 15px;background-color:#f8f9fa;border:1px solid #e0e6ed;border-radius:6px;color:#333;font-size:1rem;transition:var(--transition)}
+   input:focus,select:focus,textarea:focus {outline:0;border-color:var(--primary-color);box-shadow:0 0 0 3px rgba(52,152,219,.15);background-color:#fff}
+   .btn {display:inline-block;padding:12px 24px;background:var(--primary-color);color:#fff;border:none;border-radius:6px;cursor:pointer;font-size:1rem;font-weight:600;transition:var(--transition);text-align:center}
+   .btn:hover {background:#2980b9;transform:translateY(-2px);box-shadow:0 4px 12px rgba(52,152,219,.3)}
+   .btn-danger {background:var(--danger-color)}
+   .btn-danger:hover {background:#c0392b;box-shadow:0 4px 12px rgba(231,76,60,.3)}
+   .btn-success {background:var(--success-color)}
+   .btn-success:hover {background:#219955;box-shadow:0 4px 12px rgba(39,174,96,.3)}
+   .btn-warning {background:var(--warning-color)}
+   .btn-warning:hover {background:#d68910;box-shadow:0 4px 12px rgba(243,156,18,.3)}
+   .form-actions {display:flex;gap:12px;margin-top:25px}
+   .stats {display:flex;flex-direction:column;gap:15px;margin-bottom:25px}
+   .stat-item {background:#f8f9fa;border-radius:8px;padding:18px;text-align:center;border:1px solid #e0e6ed;transition:var(--transition);width:100%}
+   .stat-item:hover {background:#fff;border-color:var(--primary-color)}
+   .stat-value {font-size:1.8rem;font-weight:700;color:var(--dark-color);margin:8px 0;display:flex;align-items:center;justify-content:center;gap:5px}
+   .stat-label {font-size:.9rem;color:#7f8c8d;font-weight:600}
+   .records-container {max-height:450px;overflow-y:auto;margin-top:20px;border-radius:8px;padding-right:5px}
+   .record-item {background:#fff;border-radius:8px;padding:18px;margin-bottom:15px;border-left:4px solid var(--primary-color);border:1px solid #e0e6ed;transition:var(--transition)}
+   .record-item:hover {border-color:var(--primary-color);transform:translateX(3px)}
+   .record-item.income {border-left-color:var(--success-color)}
+   .record-item.expense {border-left-color:var(--danger-color)}
+   .record-item.hearthstone {border-left-color:#f90;background:linear-gradient(135deg,rgba(255,153,0,.05) 0,rgba(255,204,0,.05) 100%);box-shadow:0 4px 12px rgba(255,153,0,.1)}
+   .record-item.hearthstone:hover {box-shadow:0 6px 16px rgba(255,153,0,.15);transform:translateY(-2px)}
+   .record-header {display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px;flex-wrap:wrap;gap:10px}
+   .record-type {padding:4px 12px;border-radius:20px;font-size:.8rem;font-weight:600}
+   .type-income {background-color:rgba(39,174,96,.1);color:var(--success-color);border:1px solid rgba(39,174,96,.2)}
+   .type-expense {background-color:rgba(231,76,60,.1);color:var(--danger-color);border:1px solid rgba(231,76,60,.2)}
+   .type-hearthstone {background-color:rgba(255,153,0,.2);color:#f90;border:1px solid rgba(255,153,0,.3);text-shadow:0 0 5px rgba(255,153,0,.3)}
+   .record-amount {font-size:1.5rem;font-weight:700;color:var(--dark-color);display:flex;flex-direction:column;align-items:flex-end}
+   .record-details {color:#5a6c7d;margin-top:10px;font-size:.95rem;line-height:1.5}
+   .record-character-info {display:flex;flex-wrap:wrap;gap:15px;margin-top:12px;color:#5a6c7d;font-size:.9rem}
+   .record-character-info span {display:flex;align-items:center;gap:5px;background:#f8f9fa;padding:4px 10px;border-radius:4px}
+   .record-meta {display:flex;flex-wrap:wrap;gap:15px;margin-top:10px;color:#7f8c8d;font-size:.85rem}
+   .record-meta span {display:flex;align-items:center;gap:5px}
+   .record-actions {display:flex;gap:10px;margin-top:15px}
+   .record-actions button {padding:6px 12px;font-size:.85rem}
+   .empty-records {text-align:center;padding:40px;color:#95a5a6;font-style:italic}
+   .empty-records i {font-size:3rem;margin-bottom:15px;opacity:.5;color:#bdc3c7}
+   footer {text-align:center;padding:25px;color:#7f8c8d;font-size:.9rem;border-top:1px solid #e0e6ed;margin-top:30px;background:#fff;border-radius:var(--border-radius);box-shadow:var(--shadow)}
+   .character-select-group {display:grid;grid-template-columns:1fr 1fr;gap:15px}
+   @media (max-width:768px) {.character-select-group {grid-template-columns:1fr}}
+   .character-management {margin-top:10px;text-align:right}
+   .character-management button {font-size:.85rem;padding:6px 12px}
+   .character-tag {display:inline-flex;align-items:center;gap:5px;background:#e8f4fc;padding:6px 12px;border-radius:20px;font-size:.85rem;color:var(--primary-color);margin:5px;border:1px solid #d6eaf8}
+   ::-webkit-scrollbar {width:8px}
+   ::-webkit-scrollbar-track {background:#f1f1f1;border-radius:4px}
+   ::-webkit-scrollbar-thumb {background:#c1c1c1;border-radius:4px}
+   ::-webkit-scrollbar-thumb:hover {background:#a8a8a8}
+   @media (max-width:768px) {.stats {grid-template-columns:1fr}.form-actions {flex-direction:column}.btn {width:100%}h1 {font-size:2rem}.record-header {flex-direction:column;align-items:flex-start;gap:10px}.record-amount {align-self:flex-end}.character-select-group {grid-template-columns:1fr}}
+   .modal {display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.5);z-index:1000;align-items:center;justify-content:center}
+   .modal-content {background:#fff;border-radius:var(--border-radius);padding:30px;box-shadow:var(--shadow);max-width:500px;width:90%;max-height:80vh;overflow-y:auto}
+   .modal-header {display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}
+   .modal-title {font-size:1.5rem;color:var(--dark-color);display:flex;align-items:center;gap:10px}
+   .close-btn {background:0 0;border:none;font-size:1.5rem;color:#7f8c8d;cursor:pointer;transition:var(--transition)}
+   .close-btn:hover {color:var(--danger-color)}
+   .amount-unit {display:flex;align-items:center;margin-top:5px}
+   .unit-btn {padding:6px 12px;background:#f8f9fa;border:1px solid #e0e6ed;color:#5a6c7d;cursor:pointer;font-size:.9rem;transition:var(--transition);display:flex;align-items:center;gap:5px}
+   .unit-btn:first-child {border-radius:6px 0 0 6px;border-right:none}
+   .unit-btn:last-child {border-radius:0 6px 6px 0}
+   .unit-btn.active {background:var(--primary-color);color:#fff;border-color:var(--primary-color)}
+   .unit-btn:hover:not(.active) {background:#e9ecef}
+   .currency-icon {vertical-align:middle}
+   .character-list-item {background:#fff;border-radius:8px;padding:15px;margin-bottom:10px;border:1px solid #e0e6ed;transition:var(--transition);cursor:move;position:relative}
+   .character-list-item:hover {border-color:var(--primary-color);transform:translateY(-2px);box-shadow:0 4px 8px rgba(0,0,0,.1)}
+   .character-list-item.dragging {opacity:.5;border:2px dashed var(--primary-color)}
+   .drag-handle {position:absolute;right:15px;top:50%;transform:translateY(-50%);color:#bdc3c7;font-size:1.2rem}
+   .amount-note {font-size:.85rem;color:#7f8c8d;margin-top:5px;line-height:1.4}
+   .amount-note strong {color:var(--primary-color)}
+   .currency-display {display:flex;align-items:center;gap:2px}
+   .currency-item {display:flex;align-items:center;gap:2px}
+   .stat-currency {display:flex;align-items:center;gap:3px}
+   .hearthstone-amount {color:#f90;font-weight:700;text-shadow:0 0 5px rgba(255,153,0,.3)}
+   .search-filter-card {background:#fff;border-radius:var(--border-radius);padding:20px;margin-bottom:20px;border:1px solid #e0e6ed;box-shadow:var(--shadow)}
+   .search-filter-header {display:flex;justify-content:space-between;align-items:center;margin-bottom:15px}
+   .search-filter-header h3 {font-size:1.2rem;color:var(--dark-color);margin:0;display:flex;align-items:center;gap:8px}
+   .filter-grid {display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:15px;margin-bottom:20px}
+   .filter-actions {display:flex;gap:10px;flex-wrap:wrap}
+   .filter-summary {background:#f8f9fa;border-radius:6px;padding:10px 15px;border-left:3px solid var(--primary-color)}
+   .filter-summary.active-filter {background:#e8f4fc;border-left-color:var(--success-color)}
+   .filter-tag {display:inline-flex;align-items:center;gap:5px;background:#e8f4fc;padding:4px 10px;border-radius:15px;font-size:.85rem;color:var(--primary-color);margin:2px;border:1px solid #d6eaf8}
+   .filter-tag .remove-filter {background:0 0;border:none;color:#7f8c8d;cursor:pointer;font-size:.8rem;padding:0 0 0 5px}
+   .filter-tag .remove-filter:hover {color:var(--danger-color)}
+   .filter-tags-container {display:flex;flex-wrap:wrap;gap:5px;margin-top:10px}
+   @media (max-width:768px) {.filter-grid {grid-template-columns:1fr}.filter-actions {flex-direction:column}.filter-actions .btn {width:100%}}
+   .mode-switch-buttons {display:flex;gap:10px;margin-bottom:20px}
+   .mode-switch-buttons .btn {flex:1;padding:12px;font-size:1rem;display:flex;align-items:center;justify-content:center;gap:8px;transition:all 0.3s ease;border:2px solid transparent}
+   .mode-switch-buttons .btn.active {background:var(--primary-color);color:white;border-color:var(--primary-color);box-shadow:0 4px 12px rgba(52,152,219,0.3)}
+   .mode-switch-buttons .btn:not(.active) {background:#f8f9fa;color:#5a6c7d;border:2px solid #e0e6ed}
+   .mode-switch-buttons .btn:not(.active):hover {background:#e9ecef;transform:translateY(-2px);border-color:#d0d7e2}
+   .smart-result-box {background:linear-gradient(135deg,rgba(155,89,182,0.05) 0,rgba(52,152,219,0.05) 100%);border-radius:10px;padding:20px;margin:20px 0;border:1px solid #e0e6ed;box-shadow:0 4px 8px rgba(0,0,0,0.05);animation:fadeIn 0.3s ease}
+   .smart-hint {margin-top:5px;font-size:.85rem;color:#7f8c8d}
+   @keyframes fadeIn {from {opacity:0;transform:translateY(-10px)} to {opacity:1;transform:translateY(0)}}
+   @media (max-width:400px) {img.currency-icon {width:19px !important;height:auto !important;max-height:15px !important;vertical-align:middle !important;margin:0 1px !important}
+   @media (max-width:400px) {.container {display:flex !important;flex-direction:column !important;align-items:center !important;padding:0 5px !important;}.main-content, .card:last-of-type {width:100% !important;max-width:100% !important;display:block !important;}.main-content {display:flex !important;flex-direction:column !important;gap:15px !important;}.main-content .card {width:100% !important;}}
+  </style>
+</head>
+<body>
+  <div class="container">
+   <header>
+    <h1>剑网三副本收支记录</h1>
+    <p class="subtitle">清晰记录，轻松管理</p>
+   </header>
+   <div class="main-content">
+    <div class="card">
+     <h2><i class="fas fa-plus-circle"></i>新增记录</h2>
+     <div class="form-group">
+      <label>记录模式</label>
+      <div class="mode-switch-buttons">
+       <button type="button" id="manualModeBtn" class="btn active"><i class="fas fa-pencil-alt"></i> 手动记录</button>
+       <button type="button" id="smartModeBtn" class="btn"><i class="fas fa-calculator"></i> 智能计算</button>
+      </div>
+     </div>
+     <form id="recordForm">
+      <div id="smartModeSection" style="display:none">
+       <div class="form-group">
+        <label for="currentTotal"><i class="fas fa-calculator"></i> 当前总金额<span class="smart-hint">（输入当前拥有的总金额，系统自动计算差额）</span></label>
+        <input type="number" id="currentTotal" min="0" step="0.00000001" placeholder="输入当前总金额">
+        <div class="amount-unit" id="smartUnitGroup">
+         <button type="button" class="unit-btn" data-unit="brick">砖</button>
+         <button type="button" class="unit-btn active" data-unit="gold">金</button>
+         <button type="button" class="unit-btn" data-unit="silver">银</button>
+         <button type="button" class="unit-btn" data-unit="copper">铜</button>
+        </div>
+       </div>
+       <div class="smart-result-box" id="smartResultSection" style="display:none">
+        <div style="font-weight:bold;color:var(--dark-color);margin-bottom:10px;display:flex;align-items:center;gap:8px;font-size:1.1rem"><i class="fas fa-brain"></i> 智能计算结果</div>
+        <div id="smartResultText" style="font-size:1.1rem;margin:10px 0"></div>
+        <div class="smart-hint"><i class="fas fa-info-circle"></i> 系统已自动填写类型和金额，请继续填写其他信息</div>
+       </div>
+      </div>
+      <div id="manualModeSection">
+       <div class="form-group">
+        <label for="type">记录类型</label>
+        <select id="type" required><option value="">请选择类型</option><option value="income">收入</option><option value="expense">支出</option></select>
+       </div>
+       <div class="form-group">
+        <label for="amount">金额</label>
+        <input type="number" id="amount" min="0" step="0.00000001" placeholder="输入金额，如：1000" required>
+        <div class="amount-unit">
+         <button type="button" class="unit-btn" data-unit="brick"> 砖</button>
+         <button type="button" class="unit-btn active" data-unit="gold"> 金</button>
+         <button type="button" class="unit-btn" data-unit="silver"> 银</button>
+         <button type="button" class="unit-btn" data-unit="copper"> 铜</button>
+        </div>
+        <div class="amount-note"><strong>剑网三货币换算规则：</strong>1砖 = 10000金，1金 = 100银，1银 = 100铜</div>
+       </div>
+      </div>
+      <div class="form-group">
+       <label for="category">分类</label>
+       <div class="character-select-group">
+        <div>
+         <select id="category" required><option value="">请选择分类</option></select>
+        </div>
+        <div>
+         <button type="button" id="manageCategories" class="btn btn-warning" style="width:100%"><i class="fas fa-tags"></i> 管理分类</button>
+        </div>
+       </div>
+       <div class="smart-hint"><i class="fas fa-info-circle"></i>点击"管理分类"按钮自定义分类</div>
+      </div>
+      <div class="form-group">
+       <label>角色信息</label>
+       <div class="character-select-group">
+        <div><select id="character" class="character-select" required><option value="">请选择角色</option></select></div>
+        <div><button type="button" id="manageCharacters" class="btn btn-warning" style="width:100%"><i class="fas fa-users"></i> 管理角色</button></div>
+       </div>
+       <div class="smart-hint"><i class="fas fa-info-circle"></i>点击"管理角色"按钮添加或管理角色</div>
+      </div>
+      <div class="form-group">
+       <label for="date">日期</label>
+       <input type="date" id="date" required>
+      </div>
+      <div class="form-group">
+       <label for="description">描述 (可选)</label>
+       <textarea id="description" rows="3" placeholder="例如：25人英雄会战弓月城，切了无相楼"></textarea>
+      </div>
+      <div class="form-actions">
+       <button type="submit" class="btn btn-success"><i class="fas fa-save"></i> 保存记录</button>
+       <button type="button" id="clearForm" class="btn"><i class="fas fa-redo"></i> 清空表单</button>
+      </div>
+     </form>
+    </div>
+    <div class="card">
+     <h2><i class="fas fa-chart-pie"></i>收支统计</h2>
+     <div class="stats">
+      <div class="stat-item">
+       <div class="stat-label">总收入</div>
+       <div class="stat-value" id="totalIncome"><span class="stat-currency">0</span></div>
+      </div>
+      <div class="stat-item">
+       <div class="stat-label">总支出</div>
+       <div class="stat-value" id="totalExpense"><span class="stat-currency">0</span></div>
+      </div>
+      <div class="stat-item">
+       <div class="stat-label">净收益</div>
+       <div class="stat-value" id="netIncome"><span class="stat-currency">0</span></div>
+      </div>
+     </div>
+     <div class="form-actions">
+      <button type="button" id="exportData" class="btn"><i class="fas fa-download"></i> 导出数据</button>
+      <button type="button" id="importData" class="btn"><i class="fas fa-upload"></i> 导入数据</button>
+      <button type="button" id="clearAll" class="btn btn-danger"><i class="fas fa-trash"></i> 清空所有</button>
+     </div>
+    </div>
+   </div>
+   <div class="card">
+    <h2><i class="fas fa-history"></i>历史记录</h2>
+    <div class="search-filter-card">
+     <div class="search-filter-header">
+      <h3><i class="fas fa-filter"></i>筛选记录</h3>
+      <button type="button" id="toggleFilters" class="btn" style="padding:6px 12px;font-size:.9rem"><i class="fas fa-sliders-h"></i> 展开筛选</button>
+     </div>
+     <div class="filter-options" id="filterOptions" style="display:none">
+      <div class="filter-grid">
+       <div class="form-group">
+        <label for="searchInput"><i class="fas fa-search"></i> 关键词搜索</label>
+        <input type="text" id="searchInput" placeholder="搜索描述、分类或角色名...">
+       </div>
+       <div class="form-group">
+        <label for="filterType"><i class="fas fa-exchange-alt"></i> 记录类型</label>
+        <select id="filterType"><option value="">所有类型</option><option value="income">收入</option><option value="expense">支出</option></select>
+       </div>
+       <div class="form-group">
+        <label for="filterCategory"><i class="fas fa-tag"></i> 分类</label>
+        <select id="filterCategory"><option value="">所有分类</option></select>
+       </div>
+       <div class="form-group">
+        <label for="filterCharacter"><i class="fas fa-user"></i> 角色</label>
+        <select id="filterCharacter"><option value="">所有角色</option></select>
+       </div>
+      </div>
+      <div class="filter-grid">
+       <div class="form-group">
+        <label for="filterDateFrom"><i class="far fa-calendar-alt"></i> 开始日期</label>
+        <input type="date" id="filterDateFrom">
+       </div>
+       <div class="form-group">
+        <label for="filterDateTo"><i class="far fa-calendar-alt"></i> 结束日期</label>
+        <input type="date" id="filterDateTo">
+       </div>
+       <div class="form-group">
+        <label for="filterAmountMin"><i class="fas fa-coins"></i> 最小金额</label>
+        <input type="number" id="filterAmountMin" min="0" step="0.01" placeholder="最小金额">
+       </div>
+       <div class="form-group">
+        <label for="filterAmountMax"><i class="fas fa-coins"></i> 最大金额</label>
+        <input type="number" id="filterAmountMax" min="0" step="0.01" placeholder="最大金额">
+       </div>
+      </div>
+      <div class="filter-actions">
+       <button type="button" id="applyFilters" class="btn btn-success"><i class="fas fa-check"></i> 应用筛选</button>
+       <button type="button" id="resetFilters" class="btn"><i class="fas fa-redo"></i> 重置筛选</button>
+       <button type="button" id="exportFiltered" class="btn"><i class="fas fa-download"></i> 导出筛选结果</button>
+      </div>
+      <div class="filter-summary" id="filterSummary" style="margin-top:15px;font-size:.9rem;color:#7f8c8d"><i class="fas fa-info-circle"></i>当前显示全部记录</div>
+     </div>
+    </div>
+    <div class="records-container" id="recordsContainer">
+     <div class="empty-records"><i class="fas fa-scroll"></i><p>暂无记录，添加第一条收支记录吧！</p></div>
+    </div>
+   </div>
+   <footer>
+    <p>剑网三副本收支记录器 | 数据仅保存在本地浏览器中</p>
+    <p>© 2026 仗剑江湖 | 使用提示：本工具不会上传任何数据到服务器</p>
+   </footer>
+  </div>
+  <div id="characterModal" class="modal">
+   <div class="modal-content">
+    <div class="modal-header">
+     <h2 class="modal-title"><i class="fas fa-users"></i>角色管理</h2>
+     <button type="button" class="close-btn" id="closeModal">&times;</button>
+    </div>
+    <div id="characterList" style="margin-bottom:20px">
+     <div style="text-align:center;padding:20px;color:#95a5a6"><i class="fas fa-user-plus" style="font-size:2rem;margin-bottom:10px"></i><p>暂无角色，请添加第一个角色</p><p style="font-size:.9rem;margin-top:10px">拖动角色可以重新排序</p></div>
+    </div>
+    <div class="form-actions">
+     <button type="button" id="addCharacterBtn" class="btn btn-success"><i class="fas fa-plus"></i> 添加角色</button>
+     <button type="button" id="closeModalBtn" class="btn"><i class="fas fa-times"></i> 关闭</button>
+    </div>
+   </div>
+  </div>
+  <div id="characterFormModal" class="modal">
+   <div class="modal-content">
+    <div class="modal-header">
+     <h2 class="modal-title"><i class="fas fa-user-edit"></i><span id="characterFormTitle">添加角色</span></h2>
+     <button type="button" class="close-btn" id="cancelCharacterForm">&times;</button>
+    </div>
+    <form id="characterForm">
+     <div class="form-group">
+      <label for="charName">角色名称</label>
+      <input type="text" id="charName" placeholder="输入角色名称" required>
+     </div>
+     <div class="form-group">
+      <label for="charServer">服务器</label>
+      <select id="charServer" required>
+       <option value="">选择服务器</option>
+       <optgroup label="电信区">
+        <option value="龙争虎斗">龙争虎斗</option>
+        <option value="剑胆琴心">剑胆琴心</option>
+        <option value="斗转星移">斗转星移</option>
+        <option value="乾坤一掷">乾坤一掷</option>
+        <option value="绝代天骄">绝代天骄</option>
+        <option value="梦江南">梦江南</option>
+        <option value="幽月轮">幽月轮</option>
+        <option value="长安城">长安城</option>
+        <option value="唯我独尊">唯我独尊</option>
+        <option value="蝶恋花">蝶恋花</option>
+       </optgroup>
+       <optgroup label="双线区">
+        <option value="天鹅坪">天鹅坪</option>
+        <option value="破阵子">破阵子</option>
+        <option value="飞龙在天">飞龙在天</option>
+       </optgroup>
+       <optgroup label="无界区">
+        <option value="眉间雪">眉间雪</option>
+        <option value="山海相逢">山海相逢</option>
+       </optgroup>
+      </select>
+     </div>
+     <div class="form-group">
+      <label for="charFaction">门派</label>
+      <select id="charFaction" required>
+       <option value="">选择门派</option>
+       <option value="七秀">七秀</option>
+       <option value="万花">万花</option>
+       <option value="少林">少林</option>
+       <option value="纯阳">纯阳</option>
+       <option value="天策">天策</option>
+       <option value="藏剑">藏剑</option>
+       <option value="五毒">五毒</option>
+       <option value="唐门">唐门</option>
+       <option value="明教">明教</option>
+       <option value="丐帮">丐帮</option>
+       <option value="苍云">苍云</option>
+       <option value="长歌">长歌</option>
+       <option value="霸刀">霸刀</option>
+       <option value="蓬莱">蓬莱</option>
+       <option value="凌雪">凌雪</option>
+       <option value="衍天">衍天</option>
+       <option value="药宗">药宗</option>
+       <option value="刀宗">刀宗</option>
+       <option value="万灵">万灵</option>
+       <option value="段氏">段氏</option>
+      </select>
+     </div>
+     <div class="form-group">
+      <label for="charNotes">备注 (可选)</label>
+      <textarea id="charNotes" rows="2" placeholder="可填写角色特点等信息"></textarea>
+     </div>
+     <input type="hidden" id="charId">
+     <div class="form-actions">
+      <button type="submit" class="btn btn-success"><i class="fas fa-save"></i> 保存角色</button>
+      <button type="button" id="cancelCharacterBtn" class="btn"><i class="fas fa-times"></i> 取消</button>
+     </div>
+    </form>
+   </div>
+  </div>
+  <div id="categoryModal" class="modal">
+   <div class="modal-content">
+    <div class="modal-header">
+     <h2 class="modal-title"><i class="fas fa-tags"></i>分类管理</h2>
+     <button type="button" class="close-btn" id="closeCategoryModal">&times;</button>
+    </div>
+    <div id="categoryList" style="margin-bottom:20px">
+     <div style="text-align:center;padding:20px;color:#95a5a6"><i class="fas fa-tag" style="font-size:2rem;margin-bottom:10px"></i><p>暂无自定义分类</p><p style="font-size:.9rem;margin-top:10px">系统默认分类无法删除</p></div>
+    </div>
+    <div class="form-actions">
+     <button type="button" id="addCategoryBtn" class="btn btn-success"><i class="fas fa-plus"></i> 添加分类</button>
+     <button type="button" id="closeCategoryModalBtn" class="btn"><i class="fas fa-times"></i> 关闭</button>
+    </div>
+   </div>
+  </div>
+  <div id="categoryFormModal" class="modal">
+   <div class="modal-content">
+    <div class="modal-header">
+     <h2 class="modal-title"><i class="fas fa-tag"></i><span id="categoryFormTitle">添加分类</span></h2>
+     <button type="button" class="close-btn" id="cancelCategoryForm">&times;</button>
+    </div>
+    <form id="categoryForm">
+     <div class="form-group">
+      <label for="categoryName">分类名称</label>
+      <input type="text" id="categoryName" placeholder="输入分类名称，如：装备修理" required>
+     </div>
+     <div class="form-group">
+      <label for="categoryType">分类类型</label>
+      <select id="categoryType" required>
+       <option value="">选择类型</option>
+       <option value="income">收入</option>
+       <option value="expense">支出</option>
+       <option value="both">通用</option>
+      </select>
+     </div>
+     <div class="form-group">
+      <label for="categoryNotes">描述 (可选)</label>
+      <textarea id="categoryNotes" rows="2" placeholder="分类描述，如：装备修理费用"></textarea>
+     </div>
+     <input type="hidden" id="categoryId">
+     <div class="form-actions">
+      <button type="submit" class="btn btn-success"><i class="fas fa-save"></i> 保存分类</button>
+      <button type="button" id="cancelCategoryBtn" class="btn"><i class="fas fa-times"></i> 取消</button>
+     </div>
+    </form>
+   </div>
+  </div>
+  <script>
+let manualSelectedUnit = 'gold';
+const currencyUnits = {
+  brick: {
+    name: '砖',
+    value: 100000000,
+    base: 'copper',
+    icon: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABkAAAASCAYAAACuLnWgAAAACXBIWXMAAAsTAAALEwEAmpwYAAAGymlUWHRYTUw6Y29tLmFkb2JlLnhtcAAAAAAAPD94cGFja2V0IGJlZ2luPSLvu78iIGlkPSJXNU0wTXBDZWhpSHpyZVN6TlRjemtjOWQiPz4gPHg6eG1wbWV0YSB4bWxuczp4PSJhZG9iZTpuczptZXRhLyIgeDp4bXB0az0iQWRvYmUgWE1QIENvcmUgNS42LWMxNDIgNzkuMTYwOTI0LCAyMDE3LzA3LzEzLTAxOjA2OjM5ICAgICAgICAiPiA8cmRmOlJERiB4bWxuczpyZGY9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkvMDIvMjItcmRmLXN5bnRheC1ucyMiPiA8cmRmOkRlc2NyaXB0aW9uIHJkZjphYm91dD0iIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtbG5zOmRjPSJodHRwOi8vcHVybC5vcmcvZGMvZWxlbWVudHMvMS4xLyIgeG1sbnM6cGhvdG9zaG9wPSJodHRwOi8vbnMuYWRvYmUuY29tL3Bob3Rvc2hvcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RFdnQ9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZUV2ZW50IyIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ0MgMjAxOCAoV2luZG93cykiIHhtcDpDcmVhdGVEYXRlPSIyMDIxLTA2LTI3VDExOjI0OjU0KzA4OjAwIiB4bXA6TW9kaWZ5RGF0ZT0iMjAyMS0wNy0wN1QwNjoxMjo1MyswODowMCIgeG1wOk1ldGFkYXRhRGF0ZT0iMjAyMS0wNy0wN1QwNjoxMjo1MyswODowMCIgZGM6Zm9ybWF0PSJpbWFnZS9wbmciIHBob3Rvc2hvcDpDb2xvck1vZGU9IjMiIHBob3Rvc2hvcDpJQ0NQcm9maWxlPSJzUkdCIElFQzYxOTY2LTIuMSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDo5ZGRiZTFmMi01MTA0LWQ0NDItYWQ5NS1iOTcyMTE2YTA3NmEiIHhtcE1NOkRvY3VtZW50SUQ9ImFkb2JlOmRvY2lkOnBob3Rvc2hvcDpmMzJiMGQxYy00N2Q5LWY1NGItODMzYS1hNjEwZjRiMzQ0NDQiIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDpjOTE4MWRlOC1lN2NjLWRhNDUtYjFhMS03OWM1ZDkxNTdiNjUiPiA8eG1wTU06SGlzdG9yeT4gPHJkZjpTZXE+IDxyZGY6bGkgc3RFdnQ6YWN0aW9uPSJjcmVhdGVkIiBzdEV2dDppbnN0YW5jZUlEPSJ4bXAuaWlkOmM5MTgxZGU4LWU3Y2MtZGE0NS1iMWExLTc5YzVkOTE1N2I2NSIgc3RFdnQ6d2hlbj0iMjAyMS0wNi0yN1QxMToyNDo1NCswODowMCIgc3RFdnQ6c29mdHdhcmVBZ2VudD0iQWRvYmUgUGhvdG9zaG9wIENDIDIwMTggKFdpbmRvd3MpIi8+IDxyZGY6bGkgc3RFdnQ6YWN0aW9uPSJzYXZlZCIgc3RFdnQ6aW5zdGFuY2VJRD0ieG1wLmlpZDoxMjdjOWVkYS1hM2ZmLWZiNDUtYTViMS1mMGZmYzdjNDdhNGEiIHN0RXZ0OndoZW49IjIwMjEtMDctMDdUMDY6MTE6NTYrMDg6MDAiIHN0RXZ0OnNvZnR3YXJlQWdlbnQ9IkFkb2JlIFBob3Rvc2hvcCBDQyAyMDE4IChXaW5kb3dzKSIgc3RFdnQ6Y2hhbmdlZD0iLyIvPiA8cmRmOmxpIHN0RXZ0OmFjdGlvbj0ic2F2ZWQiIHN0RXZ0Omluc3RhbmNlSUQ9InhtcC5paWQ6OWRkYmUxZjItNTEwNC1kNDQyLWFkOTUtYjk3MjExNmEwNzZhIiBzdEV2dDp3aGVuPSIyMDIxLTA3LTA3VDA2OjEyOjUzKzA4OjAwIiBzdEV2dDpzb2Z0d2FyZUFnZW50PSJBZG9iZSBQaG90b3Nob3AgQ0MgMjAxOCAoV2luZG93cykiIHN0RXZ0OmNoYW5nZWQ9Ii8iLz4gPC9yZGY6U2VxPiA8L3htcE1NOkhpc3Rvcnk+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+vCyjFAAAAfBJREFUOMut1E8og3EYwPH3KBzmpvydg2haRKRWUnawiLmsJqU4qOXiTaa3Wasdl4NiViS1HIRprLlYSrTSDnLYCYfFDtSKww5aj+f55bd+r/x53/Grb/udnk/P27tXAgBJ7PNJxpX+bb/Ti03mnjaapF/O53ls5ncIvEH5tm9+UbH33iJQoPCeSMZjXf+CECBbO1YxwE0KuAGLIGeLMfUTpAnJ3ow1LNlrjjHAO8CrDI/XDkhFLOwelFthqr3s4Spus5aMiEB0pZsNp2LLRobBmwsQ+BbSijCAshkkNlxECFBBJzFHSQhtwCEazuOICmozvgTnXA5diGI3AC+bViCXCcDGoplFd7jvhUzCxKL71dEMTFmMz8GFgXFdyJanswjRYOriYEKFJDfrWJALFCH87dGKHIqQbJWKEMW3oPY9BgYQhJtQXm2vcFqp59D5roMhIiRuwTfRjdC5uTitxn/3CQZnOyOIlLGyaRnyWRnCnmYW3e/SMVCcFrDVSrC37pZ1fVY4FJo3qSAazEtFh9hwHiJruhAO4eAoDeeQMigVAbrTcGGTUd0IHXxEVSJEg1UJjwofXUVJCJ38a75SGW4NYbDlm2C5R80w1oibVEv500h4uqRP/VdQ2D8bouECkhGBPyMcuowG+jDnR31aPpDvt7XVCXcJR68AAAAASUVORK5CYII='
+  },
+  gold: {
+    name: '金',
+    value: 10000,
+    base: 'copper',
+    icon: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABkAAAASCAYAAACuLnWgAAAACXBIWXMAAAsTAAALEwEAmpwYAAAF+2lUWHRYTUw6Y29tLmFkb2JlLnhtcAAAAAAAPD94cGFja2V0IGJlZ2luPSLvu78iIGlkPSJXNU0wTXBDZWhpSHpyZVN6TlRjemtjOWQiPz4gPHg6eG1wbWV0YSB4bWxuczp4PSJhZG9iZTpuczptZXRhLyIgeDp4bXB0az0iQWRvYmUgWE1QIENvcmUgNS42LWMxNDIgNzkuMTYwOTI0LCAyMDE3LzA3LzEzLTAxOjA2OjM5ICAgICAgICAiPiA8cmRmOlJERiB4bWxuczpyZGY9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkvMDIvMjItcmRmLXN5bnRheC1ucyMiPiA8cmRmOkRlc2NyaXB0aW9uIHJkZjphYm91dD0iIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtbG5zOmRjPSJodHRwOi8vcHVybC5vcmcvZGMvZWxlbWVudHMvMS4xLyIgeG1sbnM6cGhvdG9zaG9wPSJodHRwOi8vbnMuYWRvYmUuY29tL3Bob3Rvc2hvcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RFdnQ9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZUV2ZW50IyIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ0MgMjAxOCAoV2luZG93cykiIHhtcDpDcmVhdGVEYXRlPSIyMDIxLTA2LTI3VDExOjI0OjU0KzA4OjAwIiB4bXA6TW9kaWZ5RGF0ZT0iMjAyMS0wNy0wN1QwNjoxMjo0MCswODowMCIgeG1wOk1ldGFkYXRhRGF0ZT0iMjAyMS0wNy0wN1QwNjoxMjo0MCswODowMCIgZGM6Zm9ybWF0PSJpbWFnZS9wbmciIHBob3Rvc2hvcDpDb2xvck1vZGU9IjMiIHBob3Rvc2hvcDpJQ0NQcm9maWxlPSJHSU1QIGJ1aWx0LWluIHNSR0IiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6MGJkMzdhNWEtMDhjZC0yOTRjLWFlNmUtOGMzZjQ5MzA5YTBkIiB4bXBNTTpEb2N1bWVudElEPSJhZG9iZTpkb2NpZDpwaG90b3Nob3A6M2E1Y2YwZjMtZmNiNy1hNjRjLTk2ZWMtMzBkZDViMDU1MmVmIiB4bXBNTTpPcmlnaW5hbERvY3VtZW50SUQ9InhtcC5kaWQ6Y2E3OTYzMmQtZGU5My00ZTQ0LTgwNDYtY2JmMzE5ZWZjNjBkIj4gPHhtcE1NOkhpc3Rvcnk+IDxyZGY6U2VxPiA8cmRmOmxpIHN0RXZ0OmFjdGlvbj0iY3JlYXRlZCIgc3RFdnQ6aW5zdGFuY2VJRD0ieG1wLmlpZDpjYTc5NjMyZC1kZTkzLTRlNDQtODA0Ni1jYmYzMTllZmM2MGQiIHN0RXZ0OndoZW49IjIwMjEtMDYtMjdUMTE6MjQ6NTQrMDg6MDAiIHN0RXZ0OnNvZnR3YXJlQWdlbnQ9IkFkb2JlIFBob3Rvc2hvcCBDQyAyMDE4IChXaW5kb3dzKSIvPiA8cmRmOmxpIHN0RXZ0OmFjdGlvbj0ic2F2ZWQiIHN0RXZ0Omluc3RhbmNlSUQ9InhtcC5paWQ6MGJkMzdhNWEtMDhjZC0yOTRjLWFlNmUtOGMzZjQ5MzA5YTBkIiBzdEV2dDp3aGVuPSIyMDIxLTA3LTA3VDA2OjEyOjQwKzA4OjAwIiBzdEV2dDpzb2Z0d2FyZUFnZW50PSJBZG9iZSBQaG90b3Nob3AgQ0MgMjAxOCAoV2luZG93cykiIHN0RXZ0OmNoYW5nZWQ9Ii8iLz4gPC9yZGY6U2VxPiA8L3htcE1NOkhpc3Rvcnk+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+qj+jhgAAAfZJREFUOMvdlE1IG0EYhqdiJC6KkShGRDSoMai0/gTtWrBUAoGooAsWFDyIChahCOLBi4q/lxRLlZSKvQR7CURBiKiQQ88FD3rwLD30mKPHr/NOduIsbIwXDzrw8C0beJ99h8kwImJPDXt5EnMVOQuZxmwWf1/BWQy2u38DJ2MBTjl+siGn5M1rv3s9+NZDgAfucprM8F4j3EAHX0OU+qbT6qSPuEigt2ZY+OgTfB6upx6/68RWwgU3kSWdUrGwBQSDfzdzAkikCCTWdAu/ljqEyFaid9X8TOwblNgJCi7PZwXJ/TDdXkXpLp0SpGIGxTf76PunVtoY8tDerJ8OV3RBMso/LGrQ8nQ35dqud5AgODLjzYog+XM6L0SYqgDIcFXyvrPmKJdE420o/TciwmUjKcEEkEjQCsFoszHiEc9owbPKHjpdGlqoIhkOEUCwZct4OJBN0OKh05U5qk5WHdsZpPT1AmHGt0MWYvxwRMa8WZYnGgTJrQ4xHQWOqrwSUzQhRZfx8awAz2c/DCGSMlXgKnGOyYyckoJXmT8SlxRDNDrgE8EWLuYsIkXwRf3QfNtVrIqmPnhpazqQbQKJ2iQUqBQCTumjJWojLHeJo8Xn0U70RheB/rZ72mq1Y34b1NldQ3kldlcXgJDPZhOHCXu05Nlf9f8B/yrBMSqLm+8AAAAASUVORK5CYII='
+  },
+  silver: {
+    name: '银',
+    value: 100,
+    base: 'copper',
+    icon: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABkAAAASCAYAAACuLnWgAAAACXBIWXMAAAsTAAALEwEAmpwYAAAF+2lUWHRYTUw6Y29tLmFkb2JlLnhtcAAAAAAAPD94cGFja2V0IGJlZ2luPSLvu78iIGlkPSJXNU0wTXBDZWhpSHpyZVN6TlRjemtjOWQiPz4gPHg6eG1wbWV0YSB4bWxuczp4PSJhZG9iZTpuczptZXRhLyIgeDp4bXB0az0iQWRvYmUgWE1QIENvcmUgNS42LWMxNDIgNzkuMTYwOTI0LCAyMDE3LzA3LzEzLTAxOjA2OjM5ICAgICAgICAiPiA8cmRmOlJERiB4bWxuczpyZGY9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkvMDIvMjItcmRmLXN5bnRheC1ucyMiPiA8cmRmOkRlc2NyaXB0aW9uIHJkZjphYm91dD0iIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtbG5zOmRjPSJodHRwOi8vcHVybC5vcmcvZGMvZWxlbWVudHMvMS4xLyIgeG1sbnM6cGhvdG9zaG9wPSJodHRwOi8vbnMuYWRvYmUuY29tL3Bob3Rvc2hvcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RFdnQ9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZUV2ZW50IyIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ0MgMjAxOCAoV2luZG93cykiIHhtcDpDcmVhdGVEYXRlPSIyMDIxLTA2LTI3VDExOjI0OjU0KzA4OjAwIiB4bXA6TW9kaWZ5RGF0ZT0iMjAyMS0wNy0wN1QwNjoxMzoyNiswODowMCIgeG1wOk1ldGFkYXRhRGF0ZT0iMjAyMS0wNy0wN1QwNjoxMzoyNiswODowMCIgZGM6Zm9ybWF0PSJpbWFnZS9wbmciIHBob3Rvc2hvcDpDb2xvck1vZGU9IjMiIHBob3Rvc2hvcDpJQ0NQcm9maWxlPSJHSU1QIGJ1aWx0LWluIHNSR0IiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6MzE2ZTgxYzQtMDQ2MC02ZDRhLWI0ZTAtMDgzYzEzZDhjNTgwIiB4bXBNTTpEb2N1bWVudElEPSJhZG9iZTpkb2NpZDpwaG90b3Nob3A6ODdmZGNhODktZTgyZC1hMjQ4LWIxZTUtNTlkMTVjN2U4YTFlIiB4bXBNTTpPcmlnaW5hbERvY3VtZW50SUQ9InhtcC5kaWQ6ZjFlMjE3ZDktYWEzOC1lZjQ1LWE1YmItNjZlOTIwYWZkOTk3Ij4gPHhtcE1NOkhpc3Rvcnk+IDxyZGY6U2VxPiA8cmRmOmxpIHN0RXZ0OmFjdGlvbj0iY3JlYXRlZCIgc3RFdnQ6aW5zdGFuY2VJRD0ieG1wLmlpZDpmMWUyMTdkOS1hYTM4LWVmNDUtYTViYi02NmU5MjBhZmQ5OTciIHN0RXZ0OndoZW49IjIwMjEtMDYtMjdUMTE6MjQ6NTQrMDg6MDAiIHN0RXZ0OnNvZnR3YXJlQWdlbnQ9IkFkb2JlIFBob3Rvc2hvcCBDQyAyMDE4IChXaW5kb3dzKSIvPiA8cmRmOmxpIHN0RXZ0OmFjdGlvbj0ic2F2ZWQiIHN0RXZ0Omluc3RhbmNlSUQ9InhtcC5paWQ6MzE2ZTgxYzQtMDQ2MC02ZDRhLWI0ZTAtMDgzYzEzZDhjNTgwIiBzdEV2dDp3aGVuPSIyMDIxLTA3LTA3VDA2OjEzOjI2KzA4OjAwIiBzdEV2dDpzb2Z0d2FyZUFnZW50PSJBZG9iZSBQaG90b3Nob3AgQ0MgMjAxOCAoV2luZG93cykiIHN0RXZ0OmNoYW5nZWQ9Ii8iLz4gPC9yZGY6U2VxPiA8L3htcE1NOkhpc3Rvcnk+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+WEI/qAAAAdRJREFUOMvdlL9LQlEUx99g8SQHx6KIhLCEsB9IUQhSOEQUgg3lIP0gIZJKiCB60A8wghDJECmQfgwVQTUEtoTU0g8amgI3Gx0a/BNO59w6r2doWtDShQ/3DeeeD997370SAEh/jfT/JMWG0SCXIVZklZB0kkHl69BJcl6JrJPNSH+3vT1D2NosI1hejVTQPOR2Pu9trwCB32DvsjJXBNa/To66gWZkPK8EG+8o8z5InEcF8ZiSQ+YlKWDRQsCrkjgKQTysqJAsfxJZmo1tBYF5uDkWXJxEIJ1KQjabFtxen0J8U4ElbO739Ik5sh6Aw92QSrfdVlBipObp1J2QUHOSxLcUVcKCubE+ISDeBcEcCZ6Zp+DBuwZ69khCUHMSsYwFzGfzoEgzNz0qBDSjpLyghNKgSEg4BctIwvB28ZYR2hTUq9gvXBHdUCB5eaiysjgDobWAwO9zC1y9Dpif9qpQIntHE8g6qawUCY1maqwVnR2FBSzRCihtYGqYBA3coKTLiAtyRE/3ZyqUSCugVFjv0K4v+caTyOno2CcZJyG0EhQ8WupNg7xNP5aIA9LLtaaaSl9ro2kZAaazxXJgrquewBJ9vnW/ers+RpUG/XeF//OpfwM0X9GDO5SBFgAAAABJRU5ErkJggg=='
+  },
+  copper: {
+    name: '铜',
+    value: 1,
+    base: 'copper',
+    icon: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABkAAAASCAYAAACuLnWgAAAACXBIWXMAAAsTAAALEwEAmpwYAAAF+2lUWHRYTUw6Y29tLmFkb2JlLnhtcAAAAAAAPD94cGFja2V0IGJlZ2luPSLvu78iIGlkPSJXNU0wTXBDZWhpSHpyZVN6TlRjemtjOWQiPz4gPHg6eG1wbWV0YSB4bWxuczp4PSJhZG9iZTpuczptZXRhLyIgeDp4bXB0az0iQWRvYmUgWE1QIENvcmUgNS42LWMxNDIgNzkuMTYwOTI0LCAyMDE3LzA3LzEzLTAxOjA2OjM5ICAgICAgICAiPiA8cmRmOlJERiB4bWxuczpyZGY9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkvMDIvMjItcmRmLXN5bnRheC1ucyMiPiA8cmRmOkRlc2NyaXB0aW9uIHJkZjphYm91dD0iIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtbG5zOmRjPSJodHRwOi8vcHVybC5vcmcvZGMvZWxlbWVudHMvMS4xLyIgeG1sbnM6cGhvdG9zaG9wPSJodHRwOi8vbnMuYWRvYmUuY29tL3Bob3Rvc2hvcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RFdnQ9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZUV2ZW50IyIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ0MgMjAxOCAoV2luZG93cykiIHhtcDpDcmVhdGVEYXRlPSIyMDIxLTA2LTI3VDExOjI0OjU0KzA4OjAwIiB4bXA6TW9kaWZ5RGF0ZT0iMjAyMS0wNy0wN1QwNjoxNDoxMSswODowMCIgeG1wOk1ldGFkYXRhRGF0ZT0iMjAyMS0wNy0wN1QwNjoxNDoxMSswODowMCIgZGM6Zm9ybWF0PSJpbWFnZS9wbmciIHBob3Rvc2hvcDpDb2xvck1vZGU9IjMiIHBob3Rvc2hvcDpJQ0NQcm9maWxlPSJHSU1QIGJ1aWx0LWluIHNSR0IiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6NWYzZWUxOWMtZDZjOC03NjQ2LWEzM2YtYmI1NWViNWRkNWNiIiB4bXBNTTpEb2N1bWVudElEPSJhZG9iZTpkb2NpZDpwaG90b3Nob3A6YmQzNjFmMmEtOThjMi1hNjQ4LThkZWUtNzcyZGQ5NDdkODI5IiB4bXBNTTpPcmlnaW5hbERvY3VtZW50SUQ9InhtcC5kaWQ6ZGVlNmJiOGMtYmNhOS01MjQ5LThhYjEtNzU2N2M0MTk2NmRlIj4gPHhtcE1NOkhpc3Rvcnk+IDxyZGY6U2VxPiA8cmRmOmxpIHN0RXZ0OmFjdGlvbj0iY3JlYXRlZCIgc3RFdnQ6aW5zdGFuY2VJRD0ieG1wLmlpZDpkZWU2YmI4Yy1iY2E5LTUyNDktOGFiMS03NTY3YzQxOTY2ZGUiIHN0RXZ0OndoZW49IjIwMjEtMDYtMjdUMTE6MjQ6NTQrMDg6MDAiIHN0RXZ0OnNvZnR3YXJlQWdlbnQ9IkFkb2JlIFBob3Rvc2hvcCBDQyAyMDE4IChXaW5kb3dzKSIvPiA8cmRmOmxpIHN0RXZ0OmFjdGlvbj0ic2F2ZWQiIHN0RXZ0Omluc3RhbmNlSUQ9InhtcC5paWQ6NWYzZWUxOWMtZDZjOC03NjQ2LWEzM2YtYmI1NWViNWRkNWNiIiBzdEV2dDp3aGVuPSIyMDIxLTA3LTA3VDA2OjE0OjExKzA4OjAwIiBzdEV2dDpzb2Z0d2FyZUFnZW50PSJBZG9iZSBQaG90b3Nob3AgQ0MgMjAxOCAoV2luZG93cykiIHN0RXZ0OmNoYW5nZWQ9Ii8iLz4gPC9yZGY6U2VxPiA8L3htcE1NOkhpc3Rvcnk+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+Bz8DqwAAAgVJREFUOMu1lc1L40AUwIfS7KZxcSPUEkQ0fqBlDdJoL5WKEFmrUhHiSUEUZBGsn3jx4yIKKlr0oHgqyLK4B2HPC16FveyuRz36D3jxL3i+N3biiBUTxYEfLySZ98tL5k0YALD35umJEkNlrBxpMaLKDLKFp4aQWuRDqfsDSyi5aSg/UgkN+tO6hx3XoMZQv+Mt1lskGgomKbnbp3NkCTHSZ0A6oUOxsuASNczm3O4GkDncz3q4mSYYyVZyUnGVcANJUNCcTMTgz3kO8hsZDh1fXi0+YnWh4ZEIp1b5kqDgM7Kd33E8iYhyJUThyOYiIdMjoVm/ki6qgiSywAgz/ooEOk6l5LLIrlZvqJoXJbrKVrI9Mch9q4PC8ShcXOdhaqwVUiYDs1I5wevDGP86+MEXF2zYO8zwSDj3i6DNj6TwnASvtdPrIJGQFH66sLaeliWdfiS7JCGeq8Su125liaioKIn7kfS2NpdxCSWXJZREgEKeWEgoWqZGkqifJRzBTv5PjTaAouUlC05OHR5z0y0e+QNc2ps2jA+bXsQHdIM0Ywd1MklkEU+M/Dqb4FBiQdLS/ykhpgXqeKwmJyQCuZL+r7osANyCnNfsXZG6KJuXJZRYppTgVbswji9NhvY71YgfPPmAVa+B8UmdV8Oh6Ju3+uL4SLJYhTKGzOHxYPF/wvz8T+4ACwlDiF9TSoMAAAAASUVORK5CYII='
+  }
+};
+
+const defaultCategories = [{
+  id: 'dungeon_reward',
+  name: '副本奖励',
+  type: 'income',
+  isDefault: true
+}, {
+  id: 'equipment_auction',
+  name: '装备拍卖',
+  type: 'both',
+  isDefault: true
+}, {
+  id: 'material_sale',
+  name: '材料出售',
+  type: 'income',
+  isDefault: true
+}, {
+  id: 'potion_consumption',
+  name: '药品消耗',
+  type: 'expense',
+  isDefault: true
+}, {
+  id: 'hearthstone',
+  name: '玄晶',
+  type: 'both',
+  isDefault: true
+}, {
+  id: 'other_income',
+  name: '其他收入',
+  type: 'income',
+  isDefault: true
+}, {
+  id: 'other_expense',
+  name: '其他支出',
+  type: 'expense',
+  isDefault: true
+}];
+
+function getCurrencyIcon(unit) {if(currencyUnits[unit]&&currencyUnits[unit].icon){return '<img src="'+currencyUnits[unit].icon+'" alt="'+currencyUnits[unit].name+'" class="currency-icon">';}return '';}
+
+function loadCharactersToFilter(){
+  const filterCharacterSelect = document.getElementById('filterCharacter');
+  const characters = JSON.parse(localStorage.getItem('jx3Characters')) || [];
+
+  const currentValue = filterCharacterSelect.value;
+
+  while(filterCharacterSelect.options.length > 1){
+    filterCharacterSelect.remove(1);
+  }
+
+  characters.forEach(character => {
+    const option = document.createElement('option');
+    option.value = character.uniqueId || character.id;
+    option.textContent = character.name + ' (' + character.server + ' - ' + character.faction + ')';
+    filterCharacterSelect.appendChild(option);
+  });
+
+  if (currentValue && Array.from(filterCharacterSelect.options).some(opt => opt.value === currentValue)) {
+    filterCharacterSelect.value = currentValue;
+  }
+}
+
+window.addEventListener('storage',function(e){if(e.key==='jx3Characters'){loadCharacters();loadCharactersToFilter();}});
+document.getElementById('toggleFilters').addEventListener('click',function(){const filterOptions=document.getElementById('filterOptions');const isHidden=filterOptions.style.display==='none';if(isHidden){filterOptions.style.display='block';this.innerHTML='<i class="fas fa-sliders-h"></i> 收起筛选 ';this.classList.add('active');}else{filterOptions.style.display='none';this.innerHTML='<i class="fas fa-sliders-h"></i> 展开筛选 ';this.classList.remove('active');}});
+document.getElementById('applyFilters').addEventListener('click',function(){applyFilters();});
+document.getElementById('resetFilters').addEventListener('click',function(){resetFilters();});
+document.getElementById('exportFiltered').addEventListener('click',function(){exportFilteredData();});
+document.getElementById('searchInput').addEventListener('input',function(){if(this.value.length===0||this.value.length>=2){applyFilters();}});
+document.getElementById('filterType').addEventListener('change',applyFilters);
+document.getElementById('filterCategory').addEventListener('change',applyFilters);
+document.getElementById('filterCharacter').addEventListener('change',applyFilters);
+document.getElementById('filterDateFrom').addEventListener('change',applyFilters);
+document.getElementById('filterDateTo').addEventListener('change',applyFilters);
+document.getElementById('filterAmountMin').addEventListener('change',applyFilters);
+document.getElementById('filterAmountMax').addEventListener('change',applyFilters);
+
+document.addEventListener('DOMContentLoaded',function(){
+  setupCurrencyButtons();
+  setChineseDateFormat();
+  loadCharacters();
+  loadCategories();
+  loadRecords();
+  loadCharactersToFilter();
+  document.getElementById('type').addEventListener('change',function(){loadCategories();});
+  document.getElementById('filterType').addEventListener('change',function(){loadCategories();});
+  document.getElementById('manualModeBtn').addEventListener('click',function(){switchToManualMode();});
+  document.getElementById('smartModeBtn').addEventListener('click',function(){switchToSmartMode();});
+  document.getElementById('currentTotal').addEventListener('input',function(){calculateSmartDifference();});
+  const smartUnitGroup=document.getElementById('smartUnitGroup');if(smartUnitGroup){smartUnitGroup.querySelectorAll('.unit-btn').forEach(btn=>{btn.addEventListener('click',function(){const unit=this.dataset.unit;smartUnitGroup.querySelectorAll('.unit-btn').forEach(b=>{b.classList.remove('active');});this.classList.add('active');calculateSmartDifference();});});}
+  
+  switchToManualMode();
+  
+  document.getElementById('recordForm').addEventListener('submit',function(e){e.preventDefault();addRecord();});
+  document.getElementById('clearForm').addEventListener('click',function(){resetForm();});
+  document.getElementById('clearAll').addEventListener('click',function(){if(confirm('确定要清空所有记录吗？此操作不可撤销。')){localStorage.removeItem('jx3Records');loadRecords();}});
+  document.getElementById('exportData').addEventListener('click',exportData);
+  document.getElementById('importData').addEventListener('click',importData);
+  document.getElementById('manageCharacters').addEventListener('click',function(){showCharacterModal();});
+  document.getElementById('manageCategories').addEventListener('click',function(){showCategoryModal();});
+  document.querySelectorAll('#manualModeSection .unit-btn').forEach(btn=>{btn.addEventListener('click',()=>{document.querySelectorAll('#manualModeSection .unit-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');manualSelectedUnit=btn.dataset.unit})});
+  document.getElementById('closeModal').addEventListener('click',function(){document.getElementById('characterModal').style.display='none';});
+  document.getElementById('closeModalBtn').addEventListener('click',function(){document.getElementById('characterModal').style.display='none';});
+  document.getElementById('addCharacterBtn').addEventListener('click',function(){document.getElementById('characterModal').style.display='none';showCharacterFormModal();});
+  document.getElementById('characterForm').addEventListener('submit',function(e){e.preventDefault();saveCharacter();});
+  document.getElementById('cancelCharacterForm').addEventListener('click',function(){document.getElementById('characterFormModal').style.display='none';});
+  document.getElementById('cancelCharacterBtn').addEventListener('click',function(){document.getElementById('characterFormModal').style.display='none';});
+  document.getElementById('closeCategoryModal').addEventListener('click',function(){document.getElementById('categoryModal').style.display='none';});
+  document.getElementById('closeCategoryModalBtn').addEventListener('click',function(){document.getElementById('categoryModal').style.display='none';});
+  document.getElementById('addCategoryBtn').addEventListener('click',function(){document.getElementById('categoryModal').style.display='none';showCategoryFormModal();});
+  document.getElementById('categoryForm').addEventListener('submit',function(e){e.preventDefault();saveCategory();});
+  document.getElementById('cancelCategoryForm').addEventListener('click',function(){document.getElementById('categoryFormModal').style.display='none';});
+  document.getElementById('cancelCategoryBtn').addEventListener('click',function(){document.getElementById('categoryFormModal').style.display='none';});
+  window.addEventListener('click',function(event){const characterModal=document.getElementById('characterModal');const characterFormModal=document.getElementById('characterFormModal');const categoryModal=document.getElementById('categoryModal');const categoryFormModal=document.getElementById('categoryFormModal');if(event.target===characterModal){characterModal.style.display='none';}if(event.target===characterFormModal){characterFormModal.style.display='none';}if(event.target===categoryModal){categoryModal.style.display='none';}if(event.target===categoryFormModal){categoryFormModal.style.display='none';}});
+});
+
+function setupCurrencyButtons(containerSelector = '.amount-unit') {
+  document.querySelectorAll(containerSelector + ' .unit-btn').forEach(btn => {
+    const unit = btn.dataset.unit;
+    btn.innerHTML = getCurrencyIcon(unit) + ' ' + currencyUnits[unit].name;
+  });
+}
+
+function switchToSmartMode(){
+  document.getElementById('manualModeBtn').classList.remove('active');
+  document.getElementById('smartModeBtn').classList.add('active');
+  document.getElementById('manualModeSection').style.display='none';
+  document.getElementById('smartModeSection').style.display='block';
+  document.getElementById('type').required=false;
+  document.getElementById('amount').required=false;
+  const regularUnitGroup=document.querySelector('.amount-unit');
+  const smartUnitGroup=document.getElementById('smartUnitGroup');
+  if(regularUnitGroup&&smartUnitGroup){
+    const regularActiveUnit=regularUnitGroup.querySelector('.unit-btn.active').dataset.unit;
+    smartUnitGroup.querySelectorAll('.unit-btn').forEach(btn=>{btn.classList.remove('active');if(btn.dataset.unit===regularActiveUnit){btn.classList.add('active');}});
+  }
+  const currentTotalInput=document.getElementById('currentTotal');
+  if(currentTotalInput&&currentTotalInput.value.trim()!==''){calculateSmartDifference();}
+  setTimeout(()=>{document.getElementById('currentTotal').focus();},100);
+}
+
+function switchToManualMode() {
+  document.getElementById('manualModeBtn').classList.add('active');
+  document.getElementById('smartModeBtn').classList.remove('active');
+  document.getElementById('manualModeSection').style.display = 'block';
+  document.getElementById('smartModeSection').style.display = 'none';
+  document.getElementById('smartResultSection').style.display = 'none';
+  document.getElementById('type').required = true;
+  document.getElementById('amount').required = true;
+
+  const smartUnitGroup = document.getElementById('smartUnitGroup');
+  if (smartUnitGroup) {
+    const smartActiveUnit = smartUnitGroup.querySelector('.unit-btn.active');
+    const selectedUnit = smartActiveUnit ? smartActiveUnit.dataset.unit : 'gold';
+    
+    const regularUnitGroup = document.querySelector('.amount-unit');
+    if (regularUnitGroup) {
+      regularUnitGroup.querySelectorAll('.unit-btn').forEach(btn => {
+        btn.classList.remove('active');
+        if (btn.dataset.unit === selectedUnit) {
+          btn.classList.add('active');
+        }
+      });
+      setupCurrencyButtons();
+    }
+  }
+
+  const smartAmountValue = document.getElementById('amount').value;
+  const smartTypeValue = document.getElementById('type').value;
+
+  if (smartAmountValue && smartTypeValue) {}
+}
+
+function convertToCopper(amount, unit) {
+  if (!currencyUnits[unit]) {
+    unit = 'gold';
+  }
+
+  switch(unit) {
+    case 'brick':
+      return parseFloat((amount * currencyUnits.brick.value).toFixed(8));
+    case 'gold':
+      return parseFloat((amount * currencyUnits.gold.value).toFixed(8));
+    case 'silver':
+      return parseFloat((amount * currencyUnits.silver.value).toFixed(8));
+    case 'copper':
+      return parseFloat(amount.toFixed(8));
+    default:
+      return parseFloat((amount * currencyUnits.gold.value).toFixed(8));
+  }
+}
+
+function convertFromCopper(copperAmount, targetUnit) {
+  if (!currencyUnits[targetUnit]) {
+    targetUnit = 'gold';
+  }
+
+  switch(targetUnit) {
+    case 'brick':
+      return parseFloat((copperAmount / currencyUnits.brick.value).toFixed(8));
+    case 'gold':
+      return parseFloat((copperAmount / currencyUnits.gold.value).toFixed(8));
+    case 'silver':
+      return parseFloat((copperAmount / currencyUnits.silver.value).toFixed(8));
+    case 'copper':
+      return parseFloat(copperAmount.toFixed(8));
+    default:
+      return parseFloat((copperAmount / currencyUnits.gold.value).toFixed(8));
+  }
+}
+
+function calculateSmartDifference() {
+  const currentTotalInput = document.getElementById('currentTotal').value;
+  const smartUnitGroup = document.getElementById('smartUnitGroup');
+  const selectedUnit = smartUnitGroup.querySelector('.unit-btn.active').dataset.unit;
+  
+  if (!currentTotalInput || currentTotalInput.trim() === '') {
+    document.getElementById('smartResultSection').style.display = 'none';
+    document.getElementById('type').value = '';
+    document.getElementById('amount').value = '';
+    return;
+  }
+  
+  const currentTotal = parseFloat(currentTotalInput);
+  
+  if (isNaN(currentTotal) || currentTotal < 0) {
+    document.getElementById('smartResultText').innerHTML = '<span style="color: var(--danger-color);"><i class="fas fa-exclamation-circle"></i> 请输入有效的金额</span>';
+    document.getElementById('smartResultSection').style.display = 'block';
+    document.getElementById('type').value = '';
+    document.getElementById('amount').value = '';
+    return;
+  }
+
+  const currentTotalCopper = convertToCopper(currentTotal, selectedUnit);
+  
+  const records = JSON.parse(localStorage.getItem('jx3Records')) || [];
+  let previousTotalCopper = 0;
+  
+  records.forEach(record => {
+    if (record.type === 'income') {
+      previousTotalCopper += record.amount;
+    } else {
+      previousTotalCopper -= record.amount;
+    }
+  });
+
+  const differenceCopper = parseFloat((currentTotalCopper - previousTotalCopper).toFixed(8));
+  const absDifference = Math.abs(differenceCopper);
+
+  const regularUnitGroup = document.querySelector('.amount-unit');
+  if (regularUnitGroup) {
+    regularUnitGroup.querySelectorAll('.unit-btn').forEach(btn => {
+      btn.classList.remove('active');
+      if (btn.dataset.unit === selectedUnit) {
+        btn.classList.add('active');
+      }
+    });
+  }
+  
+  const smartResultSection = document.getElementById('smartResultSection');
+  const smartResultText = document.getElementById('smartResultText');
+  smartResultSection.style.display = 'block';
+  
+  if (differenceCopper > 0.00001) {
+    const displayAmount = convertFromCopper(absDifference, selectedUnit);
+    
+    smartResultText.innerHTML = `<div style="display: flex; align-items: center; gap: 10px;"><span style="color: var(--success-color); font-size: 1.2rem;"><i class="fas fa-arrow-up"></i> 收入</span><span style="font-weight: bold;">${displayAmount} ${getCurrencyIcon(selectedUnit)}</span></div><div style="font-size: 0.9rem; margin-top: 5px; color: #5a6c7d;">差额：${formatCurrency(absDifference)}</div>`;
+    
+    document.getElementById('type').value = 'income';
+    document.getElementById('amount').value = displayAmount;
+    document.getElementById('type').dispatchEvent(new Event('change'));
+  } else if (differenceCopper < -0.00001) {
+    const displayAmount = convertFromCopper(absDifference, selectedUnit);
+    
+    smartResultText.innerHTML = `<div style="display: flex; align-items: center; gap: 10px;"><span style="color: var(--danger-color); font-size: 1.2rem;"><i class="fas fa-arrow-down"></i> 支出</span><span style="font-weight: bold;">${displayAmount} ${getCurrencyIcon(selectedUnit)}</span></div><div style="font-size: 0.9rem; margin-top: 5px; color: #5a6c7d;">差额：-${formatCurrency(absDifference)}</div>`;
+    
+    document.getElementById('type').value = 'expense';
+    document.getElementById('amount').value = displayAmount;
+    document.getElementById('type').dispatchEvent(new Event('change'));
+  } else {
+    smartResultText.innerHTML = `<div style="display: flex; align-items: center; gap: 10px; color: var(--primary-color);"><i class="fas fa-check-circle"></i><span>金额无变化</span></div><div style="font-size: 0.9rem; margin-top: 5px; color: #5a6c7d;">当前总金额与记录总额一致</div>`;
+    document.getElementById('type').value = '';
+    document.getElementById('amount').value = '';
+  }
+}
+
+function setChineseDateFormat(){const today=new Date();const year=today.getFullYear();const month=String(today.getMonth()+1).padStart(2,'0');const day=String(today.getDate()).padStart(2,'0');document.getElementById('date').value=year+'/'+month+'/'+day;}
+
+function showCharacterModal(){document.getElementById('characterModal').style.display='flex';loadCharacterList();}
+
+function showCharacterFormModal(character=null){const title=document.getElementById('characterFormTitle');const form=document.getElementById('characterForm');if(character){title.textContent='编辑角色';document.getElementById('charId').value=character.id;document.getElementById('charName').value=character.name;document.getElementById('charServer').value=character.server;document.getElementById('charFaction').value=character.faction;document.getElementById('charNotes').value=character.notes||'';}else{title.textContent='添加角色';form.reset();document.getElementById('charId').value='';}document.getElementById('characterFormModal').style.display='flex';}
+
+function saveCharacter() {
+  const id = document.getElementById('charId').value || '';
+  const name = document.getElementById('charName').value.trim();
+  const server = document.getElementById('charServer').value;
+  const faction = document.getElementById('charFaction').value;
+  const notes = document.getElementById('charNotes').value.trim();
+  
+  if (!name || !server || !faction) {
+    alert('请填写完整的角色信息！');
+    return;
+  }
+
+  const charUniqueId = generateCharacterId(name, server);
+  
+  let characters = JSON.parse(localStorage.getItem('jx3Characters')) || [];
+
+  const duplicateChar = characters.find(c => 
+    c.name === name && 
+    c.server === server && 
+    c.id !== id
+  );
+  
+  if (duplicateChar) {
+    alert(`服务器"${server}"中已存在角色"${name}"，无法重复添加！`);
+    return;
+  }
+
+  if (id) {
+    const existingIndex = characters.findIndex(c => c.id === id);
+    if (existingIndex >= 0) {
+      characters[existingIndex] = {
+        id: id,
+        name: name,
+        server: server,
+        faction: faction,
+        notes: notes,
+        uniqueId: charUniqueId
+      };
+    }
+  } 
+
+  else {
+    characters.push({
+      id: charUniqueId,
+      name: name,
+      server: server,
+      faction: faction,
+      notes: notes,
+      uniqueId: charUniqueId
+    });
+  }
+
+  localStorage.setItem('jx3Characters', JSON.stringify(characters));
+  document.getElementById('characterFormModal').style.display = 'none';
+  loadCharacters();
+  loadCharactersToFilter();
+  alert('角色保存成功！');
+}
+
+function generateCharacterId(name, server) {
+  const str = server + '|' + name;
+  let hash = 0;
+  for (let i = 0; i < str.length; i++) {
+    const char = str.charCodeAt(i);
+    hash = ((hash << 5) - hash) + char;
+    hash = hash & hash;
+  }
+  return 'char_' + Math.abs(hash).toString(36);
+}
+
+function loadCharacters(){const characterSelect=document.getElementById('character');const characters=JSON.parse(localStorage.getItem('jx3Characters'))||[];while(characterSelect.options.length>1){characterSelect.remove(1);}characters.forEach(character=>{const option=document.createElement('option');option.value=character.uniqueId;option.textContent=character.name+' ('+character.server+' - '+character.faction+')';characterSelect.appendChild(option);});}
+
+function loadCharacterList(){
+  const characterList=document.getElementById('characterList');
+  let characters=JSON.parse(localStorage.getItem('jx3Characters'))||[];
+  if(characters.length===0){
+    characterList.innerHTML='<div style="text-align: center; padding: 20px; color: #95a5a6;"><i class="fas fa-user-plus" style="font-size: 2rem; margin-bottom: 10px;"></i><p>暂无角色，请添加第一个角色</p><p style="font-size: 0.9rem; margin-top: 10px;">拖动角色可以重新排序</p></div>';
+    return;
+  }
+  characterList.innerHTML='';
+  characters.forEach((character,index)=>{
+    const charElement=document.createElement('div');
+    charElement.className='character-list-item';
+    charElement.dataset.index=index;
+    charElement.dataset.id=character.id;
+    charElement.innerHTML='<div><strong style="color: var(--dark-color);">'+character.name+'</strong><span style="margin-left: 10px; color: var(--primary-color);">'+character.faction+'</span></div><div style="color: #7f8c8d; font-size: 0.9rem; margin-top: 5px;">'+character.server+'</div>'+(character.notes?'<div style="color: #95a5a6; font-size: 0.85rem; margin-top: 5px;">'+character.notes+'</div>':'')+'<div style="display: flex; gap: 10px; margin-top: 10px;"><button class="btn" onclick="editCharacter(\''+character.id+'\')" style="padding: 4px 8px; font-size: 0.8rem;"><i class="fas fa-edit"></i> 编辑 </button><button class="btn btn-danger" onclick="deleteCharacter(\''+character.id+'\')" style="padding: 4px 8px; font-size: 0.8rem;"><i class="fas fa-trash"></i> 删除 </button></div><div class="drag-handle"><i class="fas fa-grip-lines"></i></div>';
+    characterList.appendChild(charElement);
+  });
+  initDragAndDrop();
+}
+
+function initDragAndDrop(){const characterList=document.getElementById('characterList');let draggedItem=null;characterList.querySelectorAll('.character-list-item').forEach(item=>{item.setAttribute('draggable','true');item.addEventListener('dragstart',function(e){draggedItem=this;setTimeout(()=>{this.classList.add('dragging');},0);});item.addEventListener('dragend',function(e){this.classList.remove('dragging');draggedItem=null;saveCharacterOrder();});item.addEventListener('dragover',function(e){e.preventDefault();const afterElement=getDragAfterElement(characterList,e.clientY);const draggable=document.querySelector('.dragging');if(afterElement==null){characterList.appendChild(draggable);}else{characterList.insertBefore(draggable,afterElement);}});});}
+
+function getDragAfterElement(container,y){const draggableElements=[...container.querySelectorAll('.character-list-item:not(.dragging)')];return draggableElements.reduce((closest,child)=>{const box=child.getBoundingClientRect();const offset=y-box.top-box.height/2;if(offset<0&&offset>closest.offset){return{offset:offset,element:child};}else{return closest;}},{offset:Number.NEGATIVE_INFINITY}).element;}
+
+function saveCharacterOrder(){
+  const characterList = document.getElementById('characterList');
+  const characterItems = characterList.querySelectorAll('.character-list-item');
+  let characters = JSON.parse(localStorage.getItem('jx3Characters')) || [];
+  const orderedCharacters = [];
+  
+  characterItems.forEach(item => {
+    const charId = item.dataset.id;
+    const character = characters.find(c => c.id === charId);
+    if(character){
+      orderedCharacters.push(character);
+    }
+  });
+  
+  localStorage.setItem('jx3Characters', JSON.stringify(orderedCharacters));
+  loadCharacters();
+  loadCharactersToFilter();
+}
+
+function editCharacter(id){const characters=JSON.parse(localStorage.getItem('jx3Characters'))||[];const character=characters.find(c=>c.id===id);if(character){showCharacterFormModal(character);}}
+
+function deleteCharacter(id){
+  if(!confirm('确定要删除这个角色吗？相关的记录不会被删除，但会失去角色信息。')){return;}
+  let characters=JSON.parse(localStorage.getItem('jx3Characters'))||[];
+  characters=characters.filter(c=>c.id!==id);
+  localStorage.setItem('jx3Characters',JSON.stringify(characters));
+  loadCharacters();
+  loadCharacterList();
+  loadCharactersToFilter();
+  alert('角色已删除！');
+}
+
+function showCategoryModal(){document.getElementById('categoryModal').style.display='flex';loadCategoryList();}
+function showCategoryFormModal(category=null){const title=document.getElementById('categoryFormTitle');const form=document.getElementById('categoryForm');if(category){title.textContent='编辑分类';document.getElementById('categoryId').value=category.id;document.getElementById('categoryName').value=category.name;document.getElementById('categoryType').value=category.type;document.getElementById('categoryNotes').value=category.notes||'';}else{title.textContent='添加分类';form.reset();document.getElementById('categoryId').value='';}document.getElementById('categoryFormModal').style.display='flex';}
+function saveCategory(){
+  const id=document.getElementById('categoryId').value||'cat_'+Date.now();
+  const name=document.getElementById('categoryName').value.trim();
+  const type=document.getElementById('categoryType').value;
+  const notes=document.getElementById('categoryNotes').value.trim();
+  if(!name||!type){alert('请填写完整的分类信息！');return;}
+  const defaultCategory=defaultCategories.find(cat=>cat.name===name);
+  if(defaultCategory){alert('不能与系统默认分类重名！');return;}
+  let categories=JSON.parse(localStorage.getItem('jx3Categories'))||[];
+  const existingIndex=categories.findIndex(c=>c.id===id);
+  if(existingIndex>=0){categories[existingIndex]={id,name,type,notes,isDefault:false};}else{
+    const duplicateCategory=categories.find(c=>c.name===name);
+    if(duplicateCategory){alert('已存在同名分类"'+name+'"，请使用其他名称！');return;}
+    categories.push({id,name,type,notes,isDefault:false});
+  }
+  localStorage.setItem('jx3Categories',JSON.stringify(categories));
+  document.getElementById('categoryFormModal').style.display='none';
+  loadCategories();
+  loadCategoryList();
+  alert('分类保存成功！');
+}
+
+function loadCategories() {
+  const categorySelect = document.getElementById('category');
+  const filterCategorySelect = document.getElementById('filterCategory');
+  let customCategories = JSON.parse(localStorage.getItem('jx3Categories')) || [];
+  const allCategories = [...defaultCategories, ...customCategories];
+
+  categorySelect.innerHTML = '<option value="">请选择分类</option>';
+
+  const recordType = document.getElementById('type').value;
+  
+  allCategories.forEach(category => {
+    if (recordType === 'income') {
+      if (category.type === 'income' || category.type === 'both') {
+        const option = document.createElement('option');
+        option.value = category.name;
+        option.textContent = category.name;
+        categorySelect.appendChild(option);
+      }
+    } else if (recordType === 'expense') {
+      if (category.type === 'expense' || category.type === 'both') {
+        const option = document.createElement('option');
+        option.value = category.name;
+        option.textContent = category.name;
+        categorySelect.appendChild(option);
+      }
+    } else {
+      const option = document.createElement('option');
+      option.value = category.name;
+      option.textContent = category.name;
+      categorySelect.appendChild(option);
+    }
+  });
+
+  if (filterCategorySelect) {
+    filterCategorySelect.innerHTML = '<option value="">所有分类</option>';
+
+    const filterType = document.getElementById('filterType').value;
+    
+    allCategories.forEach(category => {
+      if (filterType === 'income') {
+        if (category.type === 'income' || category.type === 'both') {
+          const option = document.createElement('option');
+          option.value = category.name;
+          option.textContent = category.name;
+          filterCategorySelect.appendChild(option);
+        }
+      } else if (filterType === 'expense') {
+        if (category.type === 'expense' || category.type === 'both') {
+          const option = document.createElement('option');
+          option.value = category.name;
+          option.textContent = category.name;
+          filterCategorySelect.appendChild(option);
+        }
+      } else {
+        const option = document.createElement('option');
+        option.value = category.name;
+        option.textContent = category.name;
+        filterCategorySelect.appendChild(option);
+      }
+    });
+  }
+}
+
+function loadCategoryList(){
+  const categoryList=document.getElementById('categoryList');
+  let customCategories=JSON.parse(localStorage.getItem('jx3Categories'))||[];
+  if(customCategories.length===0){
+    categoryList.innerHTML='<div style="text-align: center; padding: 20px; color: #95a5a6;"><i class="fas fa-tag" style="font-size: 2rem; margin-bottom: 10px;"></i><p>暂无自定义分类</p><p style="font-size: 0.9rem; margin-top: 10px;">系统默认分类无法删除</p></div>';
+    return;
+  }
+  categoryList.innerHTML='';
+  customCategories.forEach((category,index)=>{
+    const catElement=document.createElement('div');
+    catElement.className='character-list-item';
+    catElement.dataset.index=index;
+    catElement.dataset.id=category.id;
+    let typeColor=category.type==='income'?'var(--success-color)':category.type==='expense'?'var(--danger-color)':'var(--primary-color)';
+    let typeText=category.type==='income'?'收入':category.type==='expense'?'支出':'通用';
+    catElement.innerHTML='<div><strong style="color: var(--dark-color);">'+category.name+'</strong><span style="margin-left: 10px; color: '+typeColor+'; background: '+typeColor+'15; padding: 2px 8px; border-radius: 12px; font-size: 0.8rem;">'+typeText+'</span></div>'+(category.notes?'<div style="color: #95a5a6; font-size: 0.85rem; margin-top: 5px;">'+category.notes+'</div>':'')+'<div style="display: flex; gap: 10px; margin-top: 10px;"><button class="btn" onclick="editCategory(\''+category.id+'\')" style="padding: 4px 8px; font-size: 0.8rem;"><i class="fas fa-edit"></i> 编辑</button><button class="btn btn-danger" onclick="deleteCategory(\''+category.id+'\')" style="padding: 4px 8px; font-size: 0.8rem;"><i class="fas fa-trash"></i> 删除</button></div>';
+    categoryList.appendChild(catElement);
+  });
+}
+function editCategory(id){let categories=JSON.parse(localStorage.getItem('jx3Categories'))||[];const category=categories.find(c=>c.id===id);if(category){showCategoryFormModal(category);}}
+function deleteCategory(id){if(!confirm('确定要删除这个分类吗？使用此分类的记录不会被删除，但会失去分类信息。')){return;}let categories=JSON.parse(localStorage.getItem('jx3Categories'))||[];categories=categories.filter(c=>c.id!==id);localStorage.setItem('jx3Categories',JSON.stringify(categories));loadCategories();loadCategoryList();alert('分类已删除！');}
+
+function addRecord() {
+  const isSmartMode = document.getElementById('smartModeBtn').classList.contains('active');
+  const type = document.getElementById('type').value;
+  const amountInputEl = document.getElementById('amount');
+  const amountInput = amountInputEl.value;
+
+  if (!type) {
+    alert('请选择记录类型！');
+    return;
+  }
+
+  if (!amountInput || amountInput.trim() === '') {
+    alert('请输入金额！');
+    return;
+  }
+
+  const originalAmount = parseFloat(amountInput);
+  if (isNaN(originalAmount) || originalAmount <= 0) {
+    alert('请输入有效的金额！');
+    return;
+  }
+
+  let originalUnit = 'gold';
+
+  if (isSmartMode) {
+    const activeBtn = document
+      .getElementById('smartUnitGroup')
+      ?.querySelector('.unit-btn.active');
+    originalUnit = activeBtn?.dataset.unit || 'gold';
+  } else {
+    originalUnit = manualSelectedUnit || 'gold';
+  }
+
+  if (!currencyUnits[originalUnit]) {
+    originalUnit = 'gold';
+  }
+
+  const amountInCopper = convertToCopper(originalAmount, originalUnit);
+
+  const category = document.getElementById('category').value;
+  if (!category) {
+    alert('请选择分类！');
+    return;
+  }
+
+  const characterId = document.getElementById('character').value;
+  if (!characterId) {
+    alert('请选择角色！');
+    return;
+  }
+
+  const date = document.getElementById('date').value;
+  if (!date) {
+    alert('请选择日期！');
+    return;
+  }
+
+  const characters = JSON.parse(localStorage.getItem('jx3Characters')) || [];
+  const characterInfo = characters.find(c => c.uniqueId === characterId);
+
+  if (!characterInfo) {
+    alert('选择的角色不存在，请重新选择！');
+    return;
+  }
+
+  const description = document.getElementById('description').value;
+
+  const record = {
+    id: Date.now(),
+    type,
+    amount: amountInCopper,
+    originalAmount,
+    originalUnit,
+    category,
+    character: {
+      id: characterInfo.uniqueId,
+      name: characterInfo.name,
+      server: characterInfo.server,
+      faction: characterInfo.faction
+    },
+    date,
+    description,
+    timestamp: new Date().toLocaleString(),
+    mode: isSmartMode ? 'smart' : 'manual'
+  };
+
+  const records = JSON.parse(localStorage.getItem('jx3Records')) || [];
+  records.push(record);
+  localStorage.setItem('jx3Records', JSON.stringify(records));
+
+  loadRecords();
+  resetForm();
+  alert('记录已保存！');
+}
+
+function formatCurrency(amount) {
+  if (amount === 0) return '0' + getCurrencyIcon('copper');
+  const bricks = Math.floor(amount / currencyUnits.brick.value);
+  let remaining = amount % currencyUnits.brick.value;
+  const golds = Math.floor(remaining / currencyUnits.gold.value);
+  remaining = remaining % currencyUnits.gold.value;
+  const silvers = Math.floor(remaining / currencyUnits.silver.value);
+  const coppers = remaining % currencyUnits.silver.value;
+  let result = '';
+  if (bricks > 0) {result += bricks + getCurrencyIcon('brick') + ' ';}
+  if (golds > 0) {result += golds + getCurrencyIcon('gold') + ' ';}
+  if (silvers > 0) {result += silvers + getCurrencyIcon('silver') + ' ';}
+  if (coppers > 0) {result += coppers + getCurrencyIcon('copper') + ' ';}
+  if (result === '' && coppers === 0) {result = '0' + getCurrencyIcon('copper');}
+  return result.trim();
+}
+
+let currentFilters={search:'',type:'',category:'',character:'',dateFrom:'',dateTo:'',amountMin:'',amountMax:''};
+
+function loadRecords(){
+  const recordsContainer=document.getElementById('recordsContainer');
+  let records=JSON.parse(localStorage.getItem('jx3Records'))||[];
+  const filteredRecords=filterRecords(records);
+  recordsContainer.innerHTML='';
+  if(filteredRecords.length===0){
+    recordsContainer.innerHTML='<div class="empty-records"><i class="fas fa-scroll"></i><p>'+(records.length===0?'暂无记录，添加第一条收支记录吧！':'没有找到符合条件的记录')+'</p></div>';
+    updateStats(filteredRecords);
+    return;
+  }
+  filteredRecords.sort((a,b)=>{const dateDiff=new Date(b.date)-new Date(a.date);if(dateDiff===0){return new Date(b.timestamp)-new Date(a.timestamp);}return dateDiff;});
+  filteredRecords.forEach(record=>{
+    const recordElement=document.createElement('div');
+    let recordClass='record-item '+record.type;
+    if(record.category==='玄晶'){recordClass+=' hearthstone';}
+    recordElement.className=recordClass;
+    let characterInfoHtml='';
+    if(record.character){characterInfoHtml='<div class="record-character-info"><span><i class="fas fa-user"></i> '+record.character.name+' </span><span><i class="fas fa-server"></i> '+record.character.server+' </span><span><i class="fas fa-hat-wizard"></i> '+record.character.faction+' </span></div>';}
+    let typeClass='type-income';
+    let typeText='收入';
+    if(record.type==='expense'){typeClass='type-expense';typeText='支出';}
+    if(record.category==='玄晶'){typeClass='type-hearthstone';}
+    const amountDisplay=formatCurrency(record.amount);
+    recordElement.innerHTML='<div class="record-header"><div><span class="record-type '+typeClass+'">'+typeText+'</span><span style="margin-left: 12px; font-weight: bold; '+(record.category==='玄晶'?'color: #ff9900;':'color: var(--dark-color);')+'">'+record.category+'</span></div><div class="record-amount '+(record.category==='玄晶'?'hearthstone-amount':'')+'"><div class="currency-display">'+amountDisplay+'</div></div></div>'+characterInfoHtml+(record.description?'<div class="record-details"><i class="fas fa-info-circle"></i> '+record.description+'</div>':'')+'<div class="record-meta"><span><i class="far fa-calendar"></i> '+formatDate(record.date)+'</span></div><div class="record-actions"><button class="btn" onclick="editRecord('+record.id+')"><i class="fas fa-edit"></i> 编辑 </button><button class="btn btn-danger" onclick="deleteRecord('+record.id+')"><i class="fas fa-trash"></i> 删除 </button></div>';
+    recordsContainer.appendChild(recordElement);
+  });
+  updateStats(filteredRecords);
+}
+
+function filterRecords(records){return records.filter(record=>{
+  if(currentFilters.search){const searchText=currentFilters.search.toLowerCase();const recordText=[record.description||'',record.category||'',record.character?record.character.name:''].join(' ').toLowerCase();if(!recordText.includes(searchText)){return false;}}
+  if(currentFilters.type&&record.type!==currentFilters.type){return false;}
+  if(currentFilters.category&&record.category!==currentFilters.category){return false;}
+  if(currentFilters.character&&(!record.character||record.character.id!==currentFilters.character)){return false;}
+  const recordDate=new Date(record.date);
+  if(currentFilters.dateFrom){const dateFrom=new Date(currentFilters.dateFrom);if(recordDate<dateFrom){return false;}}
+  if(currentFilters.dateTo){const dateTo=new Date(currentFilters.dateTo);dateTo.setHours(23,59,59,999);if(recordDate>dateTo){return false;}}
+  if(currentFilters.amountMin&&record.amount<parseFloat(currentFilters.amountMin)){return false;}
+  if(currentFilters.amountMax&&record.amount>parseFloat(currentFilters.amountMax)){return false;}
+  return true;});}
+
+function updateStats(records=null){if(!records){records=JSON.parse(localStorage.getItem('jx3Records'))||[];}let totalIncome=0;let totalExpense=0;records.forEach(record=>{if(record.type==='income'){totalIncome+=record.amount;}else{totalExpense+=record.amount;}});const netIncome=totalIncome-totalExpense;document.getElementById('totalIncome').innerHTML='<span class="stat-currency">'+formatCurrency(totalIncome)+'</span>';document.getElementById('totalExpense').innerHTML='<span class="stat-currency">'+formatCurrency(totalExpense)+'</span>';document.getElementById('netIncome').innerHTML='<span class="stat-currency">'+formatCurrency(netIncome)+'</span>';const netIncomeElement=document.getElementById('netIncome');if(netIncome>0){netIncomeElement.style.color='var(--success-color)';}else if(netIncome<0){netIncomeElement.style.color='var(--danger-color)';}else{netIncomeElement.style.color='var(--dark-color)';}}
+
+function deleteRecord(id){if(!confirm('确定要删除这条记录吗？')){return;}let records=JSON.parse(localStorage.getItem('jx3Records'))||[];records=records.filter(record=>record.id!==id);localStorage.setItem('jx3Records',JSON.stringify(records));loadRecords();}
+
+function editRecord(id) {
+  let records = JSON.parse(localStorage.getItem('jx3Records')) || [];
+  const record = records.find(record => record.id === id);
+  if (!record) return;
+  
+  document.getElementById('type').value = record.type;
+
+  const originalAmount = record.originalAmount !== undefined ? record.originalAmount : record.amount;
+  const originalUnit = record.originalUnit || 'gold';
+  
+  document.getElementById('amount').value = originalAmount;
+
+  document.querySelectorAll('.unit-btn').forEach(btn => {
+    btn.classList.remove('active');
+    if (btn.dataset.unit === originalUnit) {
+      btn.classList.add('active');
+    }
+  });
+
+  setupCurrencyButtons();
+  
+  document.getElementById('category').value = record.category;
+  if (record.character) {
+    document.getElementById('character').value = record.character.id;
+  } else {
+    document.getElementById('character').value = "";
+  }
+  document.getElementById('date').value = record.date;
+  document.getElementById('description').value = record.description || '';
+
+  records = records.filter(record => record.id !== id);
+  localStorage.setItem('jx3Records', JSON.stringify(records));
+  
+  document.getElementById('type').scrollIntoView({behavior: 'smooth'});
+}
+
+function exportData(){
+  const records=JSON.parse(localStorage.getItem('jx3Records'))||[];
+  const characters=JSON.parse(localStorage.getItem('jx3Characters'))||[];
+  const categories=JSON.parse(localStorage.getItem('jx3Categories'))||[];
+  if(records.length===0&&characters.length===0&&categories.length===0){alert('没有数据可以导出！');return;}
+  const exportDataObj={records:records,characters:characters,categories:categories,exportDate:new Date().toLocaleString(),version:'1.5'};
+  const dataStr=JSON.stringify(exportDataObj,null,2);
+  const dataUri='data:application/json;charset=utf-8,'+encodeURIComponent(dataStr);
+  const exportFileDefaultName='剑网三收支记录_'+new Date().toLocaleString().split(' ')[0]+'.json';
+  const linkElement=document.createElement('a');
+  linkElement.setAttribute('href',dataUri);
+  linkElement.setAttribute('download',exportFileDefaultName);
+  linkElement.click();
+}
+
+function importData(){
+  const input=document.createElement('input');
+  input.type='file';
+  input.accept='application/json';
+  input.onchange=function(event){
+    const file=event.target.files[0];
+    if(!file)return;
+    const reader=new FileReader();
+    reader.onload=function(e){
+      try{
+        const importedData=JSON.parse(e.target.result);
+
+        if (!importedData || typeof importedData !== 'object') {
+            throw new Error('数据格式不正确');
+        }
+
+        if (!importedData.records) importedData.records = [];
+        if (!importedData.characters) importedData.characters = [];
+        if (!importedData.categories) importedData.categories = [];
+
+        const existingCategories=JSON.parse(localStorage.getItem('jx3Categories'))||[];
+        const existingCatIds=existingCategories.map(c=>c.id);
+        const newCategories=importedData.categories.filter(cat=>!existingCatIds.includes(cat.id));
+        const allCategories=[...existingCategories,...newCategories];
+        localStorage.setItem('jx3Categories',JSON.stringify(allCategories));
+
+        const existingCharacters=JSON.parse(localStorage.getItem('jx3Characters'))||[];
+        const existingCharIds=existingCharacters.map(c=>c.id);
+        const newCharacters=importedData.characters.filter(char=>!existingCharIds.includes(char.id));
+        const allCharacters=[...existingCharacters,...newCharacters];
+
+        const existingRecords=JSON.parse(localStorage.getItem('jx3Records'))||[];
+        const existingRecordIds=existingRecords.map(r=>r.id);
+        const newRecords=importedData.records.filter(record=>!existingRecordIds.includes(record.id));
+        const allRecords=[...existingRecords,...newRecords];
+        
+        localStorage.setItem('jx3Characters',JSON.stringify(allCharacters));
+        localStorage.setItem('jx3Records',JSON.stringify(allRecords));
+        
+        loadCharacters();
+        loadCategories();
+        loadRecords();
+        loadCharactersToFilter();
+        
+        alert('成功导入 '+newCharacters.length+' 个角色、'+newRecords.length+' 条记录'+(newCategories.length>0?'和 '+newCategories.length+' 个分类':'')+'！');
+      }catch(error){
+        console.error('导入错误:', error);
+        alert('导入失败：文件格式不正确！错误信息：' + error.message);
+      }
+    };
+    reader.readAsText(file);
+  };
+  input.click();
+}
+
+function formatDate(dateString) {
+  const date = new Date(dateString);
+  const userLocale = localStorage.getItem('preferredLocale') || 'zh-CN';
+  
+  return date.toLocaleDateString(userLocale, {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric'
+  });
+}
+
+function applyFilters(){
+  currentFilters={search:document.getElementById('searchInput').value.trim().toLowerCase(),type:document.getElementById('filterType').value,category:document.getElementById('filterCategory').value,character:document.getElementById('filterCharacter').value,dateFrom:document.getElementById('filterDateFrom').value,dateTo:document.getElementById('filterDateTo').value,amountMin:document.getElementById('filterAmountMin').value,amountMax:document.getElementById('filterAmountMax').value};
+  loadRecords();
+  updateFilterSummary();
+}
+
+function resetFilters() {
+  document.getElementById('searchInput').value = '';
+  document.getElementById('filterType').value = '';
+  document.getElementById('filterCategory').value = '';
+  document.getElementById('filterCharacter').value = '';
+  document.getElementById('filterDateFrom').value = '';
+  document.getElementById('filterDateTo').value = '';
+  document.getElementById('filterAmountMin').value = '';
+  document.getElementById('filterAmountMax').value = '';
+  currentFilters = {search: '',type: '',category: '',character: '',dateFrom: '',dateTo: '',amountMin: '',amountMax: ''};
+  loadCategories();
+  loadRecords();
+  updateFilterSummary();
+}
+
+function updateFilterSummary(){
+  const summaryElement=document.getElementById('filterSummary');
+  let summaryText='当前显示：';
+  const activeFilters=[];
+  if(currentFilters.search){activeFilters.push('关键词"'+currentFilters.search+'"');}
+  if(currentFilters.type){const typeText=currentFilters.type==='income'?'收入':'支出';activeFilters.push('类型"'+typeText+'"');}
+  if(currentFilters.category){activeFilters.push('分类"'+currentFilters.category+'"');}
+  if(currentFilters.character){const charSelect=document.getElementById('filterCharacter');const selectedOption=charSelect.options[charSelect.selectedIndex];activeFilters.push('角色"'+selectedOption.text+'"');}
+  if(currentFilters.dateFrom||currentFilters.dateTo){
+    let dateText='日期';
+    if(currentFilters.dateFrom&&currentFilters.dateTo){dateText+=' '+currentFilters.dateFrom+' 至 '+currentFilters.dateTo;}
+    else if(currentFilters.dateFrom){dateText+=' '+currentFilters.dateFrom+' 以后';}
+    else{dateText+=' '+currentFilters.dateTo+' 以前';}
+    activeFilters.push(dateText);
+  }
+  if(currentFilters.amountMin||currentFilters.amountMax){
+    let amountText='金额';
+    if(currentFilters.amountMin&&currentFilters.amountMax){amountText+=' '+currentFilters.amountMin+' 至 '+currentFilters.amountMax;}
+    else if(currentFilters.amountMin){amountText+=' ≥ '+currentFilters.amountMin;}
+    else{amountText+=' ≤ '+currentFilters.amountMax;}
+    activeFilters.push(amountText);
+  }
+  if(activeFilters.length===0){summaryText='<i class="fas fa-info-circle"></i> 当前显示全部记录';summaryElement.className='filter-summary';}else{summaryText='<i class="fas fa-filter"></i> '+activeFilters.join(' | ');summaryElement.className='filter-summary active-filter';}
+  summaryElement.innerHTML=summaryText;
+  addFilterTags();
+}
+function exportFilteredData(){
+  const records=JSON.parse(localStorage.getItem('jx3Records'))||[];
+  const filteredRecords=filterRecords(records);
+  if(filteredRecords.length===0){alert('没有符合条件的记录可以导出！');return;}
+  const exportDataObj={records:filteredRecords,exportDate:new Date().toLocaleString(),filters:currentFilters,version:'1.0'};
+  const dataStr=JSON.stringify(exportDataObj,null,2);
+  const dataUri='data:application/json;charset=utf-8,'+encodeURIComponent(dataStr);
+  const filterText=currentFilters.search?'_搜索_'+currentFilters.search:'';
+  const exportFileDefaultName='剑网三收支记录_筛选结果'+filterText+'_'+new Date().toLocaleString().split(' ')[0]+'.json';
+  const linkElement=document.createElement('a');
+  linkElement.setAttribute('href',dataUri);
+  linkElement.setAttribute('download',exportFileDefaultName);
+  linkElement.click();
+}
+function addFilterTags(){
+  const filterSummary=document.getElementById('filterSummary');
+  const tagsContainer=document.createElement('div');
+  tagsContainer.className='filter-tags-container';
+  if(currentFilters.search){tagsContainer.appendChild(createFilterTag('search','关键词: '+currentFilters.search));}
+  if(currentFilters.type){const typeText=currentFilters.type==='income'?'收入':'支出';tagsContainer.appendChild(createFilterTag('type','类型: '+typeText));}
+  if(currentFilters.category){tagsContainer.appendChild(createFilterTag('category','分类: '+currentFilters.category));}
+  if(currentFilters.character){const charSelect=document.getElementById('filterCharacter');const selectedText=charSelect.options[charSelect.selectedIndex].text;tagsContainer.appendChild(createFilterTag('character','角色: '+selectedText));}
+  if(currentFilters.dateFrom||currentFilters.dateTo){
+    let dateText='日期: ';
+    if(currentFilters.dateFrom&&currentFilters.dateTo){dateText+=currentFilters.dateFrom+' 至 '+currentFilters.dateTo;}
+    else if(currentFilters.dateFrom){dateText+=currentFilters.dateFrom+' 以后';}
+    else{dateText+=currentFilters.dateTo+' 以前';}
+    tagsContainer.appendChild(createFilterTag('date',dateText));
+  }
+  if(currentFilters.amountMin||currentFilters.amountMax){
+    let amountText='金额: ';
+    if(currentFilters.amountMin&&currentFilters.amountMax){amountText+=currentFilters.amountMin+' 至 '+currentFilters.amountMax;}
+    else if(currentFilters.amountMin){amountText+='≥ '+currentFilters.amountMin;}
+    else{amountText+='≤ '+currentFilters.amountMax;}
+    tagsContainer.appendChild(createFilterTag('amount',amountText));
+  }
+  if(tagsContainer.children.length>0){filterSummary.appendChild(tagsContainer);}
+}
+function createFilterTag(type,text){const tag=document.createElement('span');tag.className='filter-tag';tag.innerHTML=text+'<button class="remove-filter" onclick="removeFilter(\''+type+'\')"><i class="fas fa-times"></i></button>';return tag;}
+function removeFilter(filterType){
+  switch(filterType){
+    case 'search':document.getElementById('searchInput').value='';break;
+    case 'type':document.getElementById('filterType').value='';break;
+    case 'category':document.getElementById('filterCategory').value='';break;
+    case 'character':document.getElementById('filterCharacter').value='';break;
+    case 'date':document.getElementById('filterDateFrom').value='';document.getElementById('filterDateTo').value='';break;
+    case 'amount':document.getElementById('filterAmountMin').value='';document.getElementById('filterAmountMax').value='';break;
+  }
+  applyFilters();
+}
+function resetForm(){
+  document.getElementById('recordForm').reset();
+  setChineseDateFormat();
+  loadCategories();
+  document.getElementById('character').value="";
+  document.querySelectorAll('.amount-unit .unit-btn').forEach(btn=>{btn.classList.remove('active');if(btn.dataset.unit==='gold'){btn.classList.add('active');}});
+  const smartUnitGroup=document.getElementById('smartUnitGroup');
+  if(smartUnitGroup){smartUnitGroup.querySelectorAll('.unit-btn').forEach(btn=>{btn.classList.remove('active');if(btn.dataset.unit==='gold'){btn.classList.add('active');}});}
+  document.getElementById('smartResultSection').style.display='none';
+  document.getElementById('currentTotal').value='';
+  setupCurrencyButtons();
+  switchToManualMode();
+}
+</script>
+</body>
+</html>
