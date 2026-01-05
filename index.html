@@ -632,15 +632,15 @@ function convertToCopper(amount, unit) {
 
   switch(unit) {
     case 'brick':
-      return parseFloat((amount * currencyUnits.brick.value).toFixed(8));
+      return Math.round(amount * currencyUnits.brick.value);
     case 'gold':
-      return parseFloat((amount * currencyUnits.gold.value).toFixed(8));
+      return Math.round(amount * currencyUnits.gold.value);
     case 'silver':
-      return parseFloat((amount * currencyUnits.silver.value).toFixed(8));
+      return Math.round(amount * currencyUnits.silver.value);
     case 'copper':
-      return parseFloat(amount.toFixed(8));
+      return Math.round(amount);
     default:
-      return parseFloat((amount * currencyUnits.gold.value).toFixed(8));
+      return Math.round(amount * currencyUnits.gold.value);
   }
 }
 
@@ -651,15 +651,15 @@ function convertFromCopper(copperAmount, targetUnit) {
 
   switch(targetUnit) {
     case 'brick':
-      return parseFloat((copperAmount / currencyUnits.brick.value).toFixed(8));
+      return copperAmount / currencyUnits.brick.value;
     case 'gold':
-      return parseFloat((copperAmount / currencyUnits.gold.value).toFixed(8));
+      return copperAmount / currencyUnits.gold.value;
     case 'silver':
-      return parseFloat((copperAmount / currencyUnits.silver.value).toFixed(8));
+      return copperAmount / currencyUnits.silver.value;
     case 'copper':
-      return parseFloat(copperAmount.toFixed(8));
+      return copperAmount;
     default:
-      return parseFloat((copperAmount / currencyUnits.gold.value).toFixed(8));
+      return copperAmount / currencyUnits.gold.value;
   }
 }
 
