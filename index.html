@@ -1076,19 +1076,28 @@ function addRecord() {
 }
 
 function formatCurrency(amount) {
-  if (amount === 0) return '0' + getCurrencyIcon('copper');
-  const bricks = Math.floor(amount / currencyUnits.brick.value);
-  let remaining = amount % currencyUnits.brick.value;
+  const isNegative = amount < 0;
+  const absAmount = Math.abs(amount);
+  
+  if (absAmount === 0) return '0' + getCurrencyIcon('copper');
+  
+  const bricks = Math.floor(absAmount / currencyUnits.brick.value);
+  let remaining = absAmount % currencyUnits.brick.value;
   const golds = Math.floor(remaining / currencyUnits.gold.value);
   remaining = remaining % currencyUnits.gold.value;
   const silvers = Math.floor(remaining / currencyUnits.silver.value);
   const coppers = remaining % currencyUnits.silver.value;
+  
   let result = '';
-  if (bricks > 0) {result += bricks + getCurrencyIcon('brick') + ' ';}
-  if (golds > 0) {result += golds + getCurrencyIcon('gold') + ' ';}
-  if (silvers > 0) {result += silvers + getCurrencyIcon('silver') + ' ';}
-  if (coppers > 0) {result += coppers + getCurrencyIcon('copper') + ' ';}
-  if (result === '' && coppers === 0) {result = '0' + getCurrencyIcon('copper');}
+  if (bricks > 0) result += bricks + getCurrencyIcon('brick') + ' ';
+  if (golds > 0) result += golds + getCurrencyIcon('gold') + ' ';
+  if (silvers > 0) result += silvers + getCurrencyIcon('silver') + ' ';
+  if (coppers > 0) result += coppers + getCurrencyIcon('copper') + ' ';
+  
+  if (result === '' && coppers === 0) result = '0' + getCurrencyIcon('copper');
+
+  if (isNegative) result = '-' + result;
+  
   return result.trim();
 }
 
